@@ -3,7 +3,9 @@ import bpy
 import numpy as np
 
 class MaterialManager():
-    def __init__(self,name = 'Default', color = mathutils.Color((1,1,1)), material = None):
+    """ Controls a single material
+    """
+    def __init__(self, name='Default', color=mathutils.Color((1, 1, 1)), material=None):
         
         # Construct the material index
         self.material_index = 0

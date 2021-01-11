@@ -264,34 +264,6 @@ def unregister():
     [bpy.utils.unregister_class(icla) for icla in CLASS_LIST]
 
 
-def global_variable_init_preregistration():
-    # SETUP CLASS LIST
-    global CLASS_LIST
-    CLASS_LIST = [MaterialPairProperties, PerformOptimalSelect, ClearSelection, CenterSample,
-        ControlSettingsObject_VG_, ControlSettingsTotal_VG_, PerformRaycastSelect,
-        PerformFaceSelect, VirtualGoniometerControlPanel, DeletePatch, EditSide]
-    
-    global DIFFERENTIABLE_COLORS
-
-    global FC
-    FC = FaceCache()
-
-
-from DynamicStorage.ColorManager import ColorPairs
-
-def global_variable_init_postregistration():
-    
-    global material_manager
-    material_manager = ObjectColorsManager()
-    
-    global material_pair_manager
-    material_pair_manager = material_manager
-    
-    global ColorManager
-    #material_pair_manager.attempt_restore_object_pair_list(bpy.context.active_object)
-    ColorManager = ColorPairs()
-
-
 if __name__ == "__main__":
     
     global_variable_init_preregistration()

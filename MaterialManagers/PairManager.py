@@ -13,6 +13,7 @@ class PairManager(object):
         self.bso = bpy.context.scene.cs_overall_VG_
         self.bsa = bpy.context.active_object.cs_individual_VG_
         self.bsp = None
+        self.material_1, self.material_2 = None, None
     
     def add_pair_to_blender_storage(self):
         # add a new item to the list
@@ -46,11 +47,11 @@ class PairManager(object):
 
     def create_new_material_pair(self):
         # set the color objects from the pair list
-        self.bsp.o_color_1, self.bsp.o_color_2 = self.generate_color_object()
+        self.bsp.o_color_1, self.bsp.o_color_2 = self.generate_color_objects()
         
         # create the materials
-        self.material_1 = MaterialManager(name = str(self.bsp.name + " Face (1)"), color = mathutils.Color(list(self.bsp.o_color_1)))
-        self.material_2 = MaterialManager(name = str(self.bsp.name + " Face (2)"), color = mathutils.Color(list(self.bsp.o_color_2)))
+        self.material_1 = MaterialManager(name=str(self.bsp.name + " Face (1)"), color=mathutils.Color(list(self.bsp.o_color_1)))
+        self.material_2 = MaterialManager(name=str(self.bsp.name + " Face (2)"), color=mathutils.Color(list(self.bsp.o_color_2)))
         
         self.bsp.side_1_material = self.material_1.material
         self.bsp.side_2_material = self.material_2.material
