@@ -1,6 +1,8 @@
+"""[ Face Select]"""
 from bpy.types import Operator
-from bpy import context as C
 from bpy.ops.object import mode_set
+from bpy.ops import view3d
+from Operators.ContextOveride import overide_to_3d_view
 
 # OPERATORS >> PERFORMVERTEXSELECT( FILE )
 class PerformFaceSelect(Operator):
@@ -14,6 +16,6 @@ class PerformFaceSelect(Operator):
             pass
         elif save_mode == 'EDIT':
             mode_set(mode='OBJECT')
-        override = find_3d_view_override(context)
-        bpy.ops.view3d.raycast_select_pair(override, 'INVOKE_DEFAULT')
+        override = overide_to_3d_view(context=context)
+        view3d.raycast_select_pair(override, 'INVOKE_DEFAULT') # pylint: disable=no-member
         return {'FINISHED'}
