@@ -1,4 +1,4 @@
-"""[ Sets up the common dynamically sto]
+"""[ Sets up the common volatile storage]
 """
 
 from VolatileStorage.ColorManager import ColorPairs

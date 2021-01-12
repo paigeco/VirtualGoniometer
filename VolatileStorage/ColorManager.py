@@ -9,7 +9,7 @@ from VolatileStorage.AccesibleColors import DIFFERENTIABLE_COLORS
 #
 # THANKS TO SASHA TRUBESKY'S 20 COLORS RESOURCE!
 # https://sashamaps.net/docs/resources/20-colors/
-class ColorPairs(object):
+class ColorPairs():
     """[ generates color pairs ]"""
     def __init__(self):
         try:
