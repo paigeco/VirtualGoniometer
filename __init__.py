@@ -11,6 +11,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+from . import auto_load
+
 bl_info = {
     "name" : "BTestMK1",
     "author" : "Paige",
@@ -22,14 +24,14 @@ bl_info = {
     "category" : "Generic"
 }
 
-from . import auto_load
-
 auto_load.init()
 
 def register():
+    """[ register using autoload ]"""
     auto_load.register()
 
 def unregister():
+    """[ unregister using autoload ]"""
     auto_load.unregister()
 
 if __name__ == "__main__":
