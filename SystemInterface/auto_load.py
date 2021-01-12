@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 #CUSTOM CLASS IMPORT
-from .default_panel import LayoutDemoPanel
+from default_panel import LayoutDemoPanel
 
 
 __all__ = (

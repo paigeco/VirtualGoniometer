@@ -1,3 +1,4 @@
+"""[ runs the program ]"""
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3 of the License, or
@@ -11,28 +12,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from . import auto_load
+import SystemInterface.auto_load as AutoLoader
 
 bl_info = {
     "name" : "BTestMK1",
     "author" : "Paige",
     "description" : "",
-    "blender" : (2, 80, 0),
-    "version" : (0, 0, 1),
+    "blender" : (2, 90, 0),
+    "version" : (0, 0, 31),
     "location" : "",
     "warning" : "",
     "category" : "Generic"
 }
 
-auto_load.init()
+AutoLoader.init()
 
 def register():
     """[ register using autoload ]"""
-    auto_load.register()
+    AutoLoader.register()
 
 def unregister():
     """[ unregister using autoload ]"""
-    auto_load.unregister()
+    AutoLoader.unregister()
 
 if __name__ == "__main__":
     register()
