@@ -1,5 +1,4 @@
 import bpy, bmesh
-from bpy.types import ColorManagedSequencerColorspaceSettings
 
 import numpy as np
 from mathutils import Color
@@ -28,23 +27,6 @@ class PerformOptimalSelect(bpy.types.Operator):
             bpy.ops.view3d.raycast_select_pair(override,'INVOKE_DEFAULT')
         elif save_mode == 'EDIT':
             bpy.ops.view3d.face_select_pair()
-        return {'FINISHED'}
-
-
-# OPERATORS >> PERFORMVERTEXSELECT( FILE )
-class PerformFaceSelect(bpy.types.Operator):
-    """Run a side differentiation and select the center point of a region by face"""
-    bl_idname = "view3d.face_select_pair"
-    bl_label = "Face Select Operator"
-    bl_options = {'REGISTER', 'UNDO'}
-    def execute(self, context):
-        save_mode = context.active_object.mode
-        if save_mode == 'OBJECT':
-            pass
-        elif save_mode == 'EDIT':
-            bpy.ops.object.mode_set(mode='OBJECT')
-        override = find_3d_view_override(context)
-        bpy.ops.view3d.raycast_select_pair(override, 'INVOKE_DEFAULT')
         return {'FINISHED'}
 
 # OPERATORS >> RAYCASTSELECT ( FILE )
