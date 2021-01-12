@@ -42,9 +42,9 @@ class PerformFaceSelect(bpy.types.Operator):
         if save_mode == 'OBJECT':
             pass
         elif save_mode == 'EDIT':
-            bpy.ops.object.mode_set(mode = 'OBJECT')
+            bpy.ops.object.mode_set(mode='OBJECT')
         override = find_3d_view_override(context)
-        bpy.ops.view3d.raycast_select_pair(override,'INVOKE_DEFAULT')
+        bpy.ops.view3d.raycast_select_pair(override, 'INVOKE_DEFAULT')
         return {'FINISHED'}
 
 # OPERATORS >> RAYCASTSELECT ( FILE )
