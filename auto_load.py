@@ -102,7 +102,7 @@ def iter_submodule_names(path, root=""):
 # Find classes to register
 #################################################
 
-def get_ordered_classes_to_register(modules):
+def get_ordered_classes_to_register(modules): # pylint: disable=redefined-outer-name
     """[summary]
 
     Args:
@@ -113,7 +113,7 @@ def get_ordered_classes_to_register(modules):
     """
     return toposort(get_register_deps_dict(modules))
 
-def get_register_deps_dict(modules):
+def get_register_deps_dict(modules): # pylint: disable=redefined-outer-name
     """[summary]
 
     Args:
@@ -153,7 +153,7 @@ def get_dependency_from_annotation(value):
             return value[1]["type"]
     return None
 
-def iter_classes_to_register(modules):
+def iter_classes_to_register(modules): # pylint: disable=redefined-outer-name
     """[ ]"""
     base_types = get_register_base_types()
     for cls in get_classes_in_modules(modules):
@@ -161,7 +161,7 @@ def iter_classes_to_register(modules):
             if not getattr(cls, "is_registered", False):
                 yield cls
 
-def get_classes_in_modules(modules):
+def get_classes_in_modules(modules): # pylint: disable=redefined-outer-name
     """[ ]"""
     classes = set()
     for module in modules:
