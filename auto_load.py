@@ -9,7 +9,6 @@ import importlib
 
 #import os
 import bpy
-import sklearn
 #import sys
 
 #CUSTOM CLASS IMPORT
@@ -25,6 +24,7 @@ modules = []
 ordered_classes = []
 
 def init():
+    """ [ get lists of modules and submodules ] """
     global modules  # pylint: disable=global-statement
     global ordered_classes  # pylint: disable=global-statement
 
@@ -32,6 +32,7 @@ def init():
     ordered_classes = get_ordered_classes_to_register(modules)
 
 def register():
+    """[ register ]"""
     for cls in ordered_classes:
         bpy.utils.register_class(cls)
 
@@ -42,6 +43,7 @@ def register():
             module.register()
 
 def unregister():
+    """ [ unregister classes ]"""
     debug = False
     for cls in reversed(ordered_classes):
         if debug:
@@ -59,13 +61,35 @@ def unregister():
 #################################################
 
 def get_all_submodules(directory):
+    """
+    Returns:
+        [ list ]: [ all submodules ]
+    """
     return list(iter_submodules(directory, directory.name))
 
 def iter_submodules(path, package_name):
+    """[summary]
+
+    Args:
+        path ([type]): [description]
+        package_name ([type]): [description]
+
+    Yields:
+        [type]: [description]
+    """
     for name in sorted(iter_submodule_names(path)):
         yield importlib.import_module("." + name, package_name)
 
 def iter_submodule_names(path, root=""):
+    """[summary]
+
+    Args:
+        path ([type]): [description]
+        root (str, optional): [description]. Defaults to "".
+
+    Yields:
+        [type]: [description]
+    """
     for _, module_name, is_package in pkgutil.iter_modules([str(path)]):
         if is_package:
             sub_path = path / module_name
@@ -79,9 +103,25 @@ def iter_submodule_names(path, root=""):
 #################################################
 
 def get_ordered_classes_to_register(modules):
+    """[summary]
+
+    Args:
+        modules ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
     return toposort(get_register_deps_dict(modules))
 
 def get_register_deps_dict(modules):
+    """[summary]
+
+    Args:
+        modules ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
     deps_dict = {}
     classes_to_register = set(iter_classes_to_register(modules))
     for cls in classes_to_register:
@@ -89,21 +129,32 @@ def get_register_deps_dict(modules):
     return deps_dict
 
 def iter_own_register_deps(cls, own_classes):
+    """[summary]
+
+    Args:
+        own_classes ([type]): [description]
+
+    Yields:
+        [type]: [description]
+    """
     yield from (dep for dep in iter_register_deps(cls) if dep in own_classes)
 
 def iter_register_deps(cls):
+    """[ ]"""
     for value in typing.get_type_hints(cls, {}, {}).values():
         dependency = get_dependency_from_annotation(value)
         if dependency is not None:
             yield dependency
 
 def get_dependency_from_annotation(value):
+    """[ ]"""
     if isinstance(value, tuple) and len(value) == 2:
         if value[0] in (bpy.props.PointerProperty, bpy.props.CollectionProperty):
             return value[1]["type"]
     return None
 
 def iter_classes_to_register(modules):
+    """[ ]"""
     base_types = get_register_base_types()
     for cls in get_classes_in_modules(modules):
         if any(base in base_types for base in cls.__bases__):
@@ -111,6 +162,7 @@ def iter_classes_to_register(modules):
                 yield cls
 
 def get_classes_in_modules(modules):
+    """[ ]"""
     classes = set()
     for module in modules:
         for cls in iter_classes_in_module(module):
@@ -118,11 +170,13 @@ def get_classes_in_modules(modules):
     return classes
 
 def iter_classes_in_module(module):
+    """[ ]"""
     for value in module.__dict__.values():
         if inspect.isclass(value):
             yield value
 
 def get_register_base_types():
+    """[ ]"""
     return set(getattr(bpy.types, name) for name in [
         "Panel", "Operator", "PropertyGroup",
         "AddonPreferences", "Header", "Menu",
@@ -135,6 +189,7 @@ def get_register_base_types():
 #################################################
 
 def toposort(deps_dict):
+    """[ ]"""
     sorted_list = []
     sorted_values = set()
     while len(deps_dict) > 0:

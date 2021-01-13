@@ -1,10 +1,14 @@
 import bpy
-'''
-class LayoutDemoPanel(bpy.types.Panel):
-    """Creates a Panel in the scene context of the properties editor"""
-    bl_info = "Creates a Panel in the scene context of the properties editor"
-    bl_label = "Layout Demo"
-    bl_idname = "SCENE_PT_layout"
+from bpy.types import Panel
+
+
+class SettingsPanel(Panel):
+    """Creates a Panel in the scene context of the properties editor
+    which is used to control the settings of the VirtualGoniometer and
+    mesh segmenter"""
+    bl_info = "Controls the settings for the AMAAZE Plugin"
+    bl_label = "Settings Panel"
+    bl_idname = "SCENE_PT_settings"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
@@ -59,4 +63,3 @@ class LayoutDemoPanel(bpy.types.Panel):
         sub.operator("render.render")
 
         row.operator("render.render")
-'''

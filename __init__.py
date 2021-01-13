@@ -13,6 +13,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from . import auto_load as AutoLoader
+from .src.InternalProperties.PropertyConstructor import construct
 
 bl_info = {
     "name" : "BTestMK1",
