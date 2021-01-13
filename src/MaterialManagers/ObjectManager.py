@@ -84,13 +84,17 @@ class MaterialGroupManager(object):
             self.destroy_by_index(index, context_object=context_object, destroy=destroy)
 
         
-    def destroy_by_index(self, index, context_object=bpy.context.active_object, destroy=True):
+    def destroy_by_index(self, index, context_object=None, destroy=True):
+        if context_object is None:
+            context_object = bpy.context.active_object
         pair_pointer = self.return_object_material_pairs(context_object)[index]
         self.return_object_material_pairs(context_object).pop(index)
         if destroy:
             pair_pointer.destroy()
     
-    def resync(self,context_object=bpy.context.active_object):
+    def resync(self, context_object=None):
+        if context_object is None:
+            context_object = bpy.context.active_object
         b_pairs = bpy.context.active_object.material_pairs.values()
         for i, pair in enumerate(self.return_active_material_pairs()):
             pair.blender_store_pointer = b_pairs[i]

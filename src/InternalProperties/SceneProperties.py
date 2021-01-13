@@ -1,8 +1,9 @@
 import bpy
 
+'''
 def get_objects_len(self):
     return len(material_pair_manager.return_active_material_pairs())
-
+'''
 class ControlSettingsTotal_VG_(bpy.types.PropertyGroup):
     
     accesibility_level: bpy.props.IntProperty(name='Accesibility Level',

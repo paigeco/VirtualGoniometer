@@ -5,9 +5,9 @@ def return_index_in_struct(self):
     return int("".join(filter(str.isdigit, b)))
 
 
-class MaterialPairProperties(bpy.types.PropertyGroup):
+class MaterialPair(bpy.types.PropertyGroup):
     # Set the pair name    
-    name: bpy.props.StringProperty(default = 'patch')
+    name: bpy.props.StringProperty(default='patch')
     
     index: bpy.props.IntProperty(get=return_index_in_struct)
 

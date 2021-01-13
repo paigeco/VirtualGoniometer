@@ -1,5 +1,5 @@
 """[ code for generating color blind friendly color pairs ]"""
-import bpy.context as C
+from bpy import context as C
 from .AccesibleColors import DIFFERENTIABLE_COLORS
 
 # IT HAD TO BE DONE THIS WAY FOR ACCESIBILITY REASONS

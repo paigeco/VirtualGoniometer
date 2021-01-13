@@ -1,9 +1,9 @@
 """[ Pair Manager ]"""
 import bpy
 import mathutils
-from src.CustomMath.CalculateAngle import get_angle
-from src.CustomMath.RP1DClustering import ClusteringMeanRP1D
-from src.VolatileStorage.ColorManager import ColorPairs
+from ..CustomMath.CalculateAngle import get_angle
+from ..CustomMath.RP1DClustering import ClusteringMeanRP1D
+from ..VolatileStorage.ColorManager import ColorPairs
 
 from .RegionManager import MaterialManager
 

@@ -1,7 +1,7 @@
 """ [ raycast select module ] """
 from bpy.types import Operator
 from bpy import context as C
-from bpy.ops.object import mode_set
+from bpy import ops as O
 
 from .RaycastFunctions.DoRaycast import do_raycast
 from .RaycastFunctions.CallbackOptions import move_cursor, run_by_selection
@@ -25,7 +25,7 @@ class PerformRaycastSelect(Operator):
             return {'RUNNING_MODAL'}
         elif event.type in {'RIGHTMOUSE', 'ESC'} or context.active_object.mode != 'OBJECT':
             C.space_data.overlay.show_cursor = False
-            mode_set(mode=self.save_mode)
+            O.object.mode_set(mode=self.save_mode)
             return {'CANCELLED'}
             
         return {'RUNNING_MODAL'}
@@ -35,7 +35,7 @@ class PerformRaycastSelect(Operator):
             self.save_mode = context.active_object.mode
             C.space_data.overlay.show_cursor = True
             if self.save_mode != 'OBJECT':
-                mode_set(mode='OBJECT')
+                O.object.mode_set(mode='OBJECT')
             context.window_manager.modal_handler_add(self)
             return {'RUNNING_MODAL'}
         else:

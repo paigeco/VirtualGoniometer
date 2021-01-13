@@ -1,6 +1,6 @@
 from bpy import context as C
 from bpy.types import Operator
-from bpy.ops.object import mode_set
+from bpy import ops as O
 
 # OPERATORS >> CLEARSELECTION ( FILE )
 class ClearSelection(Operator):
@@ -39,6 +39,6 @@ class ClearSelection(Operator):
         
         # Return to the user's mode
         if C.active_object.mode != save_mode:
-            mode_set(mode = save_mode)
+            O.object.mode_set(mode = save_mode)
         
         return {'FINISHED'}

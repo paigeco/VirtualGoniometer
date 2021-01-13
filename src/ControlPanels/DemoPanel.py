@@ -1,5 +1,5 @@
 import bpy
-
+'''
 class LayoutDemoPanel(bpy.types.Panel):
     """Creates a Panel in the scene context of the properties editor"""
     bl_info = "Creates a Panel in the scene context of the properties editor"
@@ -15,7 +15,7 @@ class LayoutDemoPanel(bpy.types.Panel):
         scene = context.scene
 
         # Create a simple row.
-        layout.label(text=" Simple Row:")
+        layout.label(text="THIS WORKS")
 
         row = layout.row()
         row.prop(scene, "frame_start")
@@ -59,3 +59,4 @@ class LayoutDemoPanel(bpy.types.Panel):
         sub.operator("render.render")
 
         row.operator("render.render")
+'''

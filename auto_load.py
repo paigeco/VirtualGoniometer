@@ -13,7 +13,6 @@ import sklearn
 #import sys
 
 #CUSTOM CLASS IMPORT
-from .src.ControlPanels.DemoPanel import LayoutDemoPanel as DemoPanel
 
 
 __all__ = (
@@ -23,7 +22,7 @@ __all__ = (
 )
 
 modules = []
-ordered_classes = [DemoPanel]
+ordered_classes = []
 
 def init():
     global modules  # pylint: disable=global-statement
@@ -43,7 +42,10 @@ def register():
             module.register()
 
 def unregister():
+    debug = False
     for cls in reversed(ordered_classes):
+        if debug:
+            print(cls)
         bpy.utils.unregister_class(cls)
 
     for module in modules:

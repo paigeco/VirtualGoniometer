@@ -1,13 +1,13 @@
 """[ Main Properties Panel ]
 """
 
-from bpy import context as C
+import bpy
 from bpy.types import Panel
 
 class VirtualGoniometerControlPanel(Panel):
     """Creates a Panel in the scene context of the properties editor"""
     bl_label = "Virtual Goniometer"
-    bl_idname = "SCENE_PT_layout"
+    bl_idname = "SCENE_PT_virtualgoniometer"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
@@ -16,9 +16,9 @@ class VirtualGoniometerControlPanel(Panel):
         layout = self.layout
         scene = context.scene
         
-        if C.active_object is not None:
-            cpi = C.active_object.cs_individual_VG_
-            cpo = C.active_object.material_pairs
+        if bpy.context.active_object is None:
+            cpi = bpy.context.active_object.cs_individual_VG_
+            cpo = bpy.context.active_object.material_pairs
             # Create an alligned column
             layout.label(text=" Projection Controls:")
             col = layout.row(align=True)
@@ -28,11 +28,11 @@ class VirtualGoniometerControlPanel(Panel):
             row = layout.row()
             
             
-            if C.active_object.cs_individual_VG_.base_material is None:
+            if bpy.context.active_object.cs_individual_VG_.base_material is None:
                 #base_material.attempt_recovery()
                 pass
             
-            row.prop(C.active_object.cs_individual_VG_.base_material,
+            row.prop(bpy.context.active_object.cs_individual_VG_.base_material,
                 "diffuse_color", text="Base_Color")
                 
             # Big render button
@@ -61,7 +61,7 @@ class VirtualGoniometerControlPanel(Panel):
             data_box = layout.box()
             data_box.label(text='Angle Data:')
             
-            if C.active_object is not None:
+            if bpy.context.active_object is not None:
                 
                 if len(cpo) == 0:
                     data_box.label(text="Selected Angles will show here.", icon="ADD")

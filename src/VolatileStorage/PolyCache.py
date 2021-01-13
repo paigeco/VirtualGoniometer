@@ -1,7 +1,7 @@
 """ A hotfix to save memory and cpu operations
 """
 
-import bpy.context as C
+from bpy import context as C
 from numpy import array
 
 # STORAGE >> POLYCACHE ( FILE )
