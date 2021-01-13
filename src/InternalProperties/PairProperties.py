@@ -1,5 +1,5 @@
 import bpy
-from Properties.RegionProperties import MaterialRegion
+from .RegionProperties import MaterialRegion
 def return_index_in_struct(self):
     b = self.path_from_id()
     return int("".join(filter(str.isdigit, b)))

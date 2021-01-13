@@ -1,5 +1,5 @@
 import numpy as np
-from CustomMath.PowerMethod import power_method
+from .PowerMethod import power_method
 
 #PCA SMALLEST EIG WITHOUT PMETH
 ############################################

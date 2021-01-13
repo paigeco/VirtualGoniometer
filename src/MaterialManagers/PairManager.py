@@ -1,10 +1,11 @@
+"""[ Pair Manager ]"""
 import bpy
 import mathutils
-from CustomMath.CalculateAngle import get_angle
-from CustomMath.RP1DClustering import ClusteringMeanRP1D
-from DynamicStorage.ColorManager import ColorManager
+from src.CustomMath.CalculateAngle import get_angle
+from src.CustomMath.RP1DClustering import ClusteringMeanRP1D
+from src.VolatileStorage.ColorManager import ColorPairs
 
-from MaterialManagers.RegionManager import MaterialManager
+from .RegionManager import MaterialManager
 
 
 class PairManager(object):

@@ -1,7 +1,7 @@
 import numpy as np
-from CustomMath.PCASmallestEig import pca_smallest_eig, pca_smallest_eig_powermethod
-from CustomMath.Withness import withness
-from CustomMath.CalculateAngle import get_angle
+from .PCASmallestEig import pca_smallest_eig, pca_smallest_eig_powermethod
+from .Withness import withness
+from .CalculateAngle import get_angle
 
 #RP1D clustering from
 #Han, Sangchun, and Mireille Boutin. "The hidden structure of image datasets." 2015 IEEE International Conference on Image Processing (ICIP). IEEE, 2015.

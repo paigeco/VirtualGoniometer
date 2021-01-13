@@ -2,7 +2,7 @@
 and Normals """
 import numpy as np
 
-from CustomMath.PCASmallestEig import pca_smallest_eig, pca_smallest_eig_powermethod
+from .PCASmallestEig import pca_smallest_eig, pca_smallest_eig_powermethod
 
 def get_angle(P1, P2, N1, N2, UsePCA=True, UsePower=False):
     """[summary]

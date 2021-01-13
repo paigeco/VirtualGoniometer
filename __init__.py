@@ -12,14 +12,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import SystemInterface.auto_load as AutoLoader
+from . import auto_load as AutoLoader
 
 bl_info = {
     "name" : "BTestMK1",
     "author" : "Paige",
     "description" : "",
     "blender" : (2, 90, 0),
-    "version" : (0, 0, 31),
+    "version" : (0, 0, 32),
     "location" : "",
     "warning" : "",
     "category" : "Generic"

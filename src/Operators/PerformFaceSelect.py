@@ -2,7 +2,7 @@
 from bpy.types import Operator
 from bpy.ops.object import mode_set
 from bpy.ops import view3d
-from Operators.ContextOveride import overide_to_3d_view
+from .ContextOveride import overide_to_3d_view
 
 # OPERATORS >> PERFORMVERTEXSELECT( FILE )
 class PerformFaceSelect(Operator):

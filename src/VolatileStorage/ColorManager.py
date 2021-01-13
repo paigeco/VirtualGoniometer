@@ -1,6 +1,6 @@
 """[ code for generating color blind friendly color pairs ]"""
 import bpy.context as C
-from VolatileStorage.AccesibleColors import DIFFERENTIABLE_COLORS
+from .AccesibleColors import DIFFERENTIABLE_COLORS
 
 # IT HAD TO BE DONE THIS WAY FOR ACCESIBILITY REASONS
 # DON'T WORRY I PROBABLY FEEL WORSE ABOUT HOW UN-PYTHONIC

@@ -1,9 +1,9 @@
 """[ Sets up the common volatile storage]
 """
 
-from VolatileStorage.ColorManager import ColorPairs
-from VolatileStorage.PolyCache import FaceCache
-from MaterialManagers.ObjectManager import MaterialGroupManager
+from .ColorManager import ColorPairs
+from .PolyCache import FaceCache
+from ..MaterialManagers.ObjectManager import MaterialGroupManager
 
 
 

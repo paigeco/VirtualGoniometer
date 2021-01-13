@@ -1,13 +1,17 @@
-from MaterialManagers.RegionManager import MaterialManager
-from MaterialManagers.PairManager import PairManager
+"""[ object docstring ]"""
+
 import bpy
 from mathutils import Color
 
+from .RegionManager import MaterialManager
+from .PairManager import PairManager
+
+
 class MaterialGroupManager(object):
-    def __init__ (self):
+    def __init__(self):
         
         # ADD THESE TO THE SCENE CONFIG INSTEAD
-        self.base_default_color = Color((1,1,1)) # Might add slider later \( ~_~ )/
+        self.base_default_color = Color((1, 1, 1)) # Might add slider later \( ~_~ )/
         self.base_default_name = "Base Color"
         
         self.object_material_pairs_dictionary = {}

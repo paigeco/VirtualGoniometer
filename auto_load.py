@@ -1,15 +1,19 @@
-import os
-import bpy
-import sys
+""" [ Autoload script ] """
+
+from pathlib import Path
 import typing
 import inspect
 import pkgutil
 import importlib
-from pathlib import Path
 
+
+#import os
+import bpy
+import sklearn
+#import sys
 
 #CUSTOM CLASS IMPORT
-from default_panel import LayoutDemoPanel
+from .src.ControlPanels.DemoPanel import LayoutDemoPanel as DemoPanel
 
 
 __all__ = (
@@ -19,11 +23,11 @@ __all__ = (
 )
 
 modules = []
-ordered_classes = [LayoutDemoPanel]
+ordered_classes = [DemoPanel]
 
 def init():
-    global modules
-    global ordered_classes
+    global modules  # pylint: disable=global-statement
+    global ordered_classes  # pylint: disable=global-statement
 
     modules = get_all_submodules(Path(__file__).parent)
     ordered_classes = get_ordered_classes_to_register(modules)
