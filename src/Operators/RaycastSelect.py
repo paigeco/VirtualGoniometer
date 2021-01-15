@@ -1,6 +1,6 @@
 """ [ raycast select module ] """
 from bpy.types import Operator
-from bpy import context as C
+import bpy
 from bpy import ops as O
 
 from .RaycastFunctions.DoRaycast import do_raycast
@@ -24,7 +24,7 @@ class PerformRaycastSelect(Operator):
             do_raycast(context, event, run_by_selection)
             return {'RUNNING_MODAL'}
         elif event.type in {'RIGHTMOUSE', 'ESC'} or context.active_object.mode != 'OBJECT':
-            C.space_data.overlay.show_cursor = False
+            bpy.context.space_data.overlay.show_cursor = False
             O.object.mode_set(mode=self.save_mode)
             return {'CANCELLED'}
             
@@ -33,7 +33,7 @@ class PerformRaycastSelect(Operator):
     def invoke(self, context, event):        
         if context.space_data.type == 'VIEW_3D':
             self.save_mode = context.active_object.mode
-            C.space_data.overlay.show_cursor = True
+            bpy.context.space_data.overlay.show_cursor = True
             if self.save_mode != 'OBJECT':
                 O.object.mode_set(mode='OBJECT')
             context.window_manager.modal_handler_add(self)

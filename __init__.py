@@ -13,8 +13,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from . import auto_load as AutoLoader
-from .src.InternalProperties.PropertyConstructor import construct_properties
-from .src.MaterialManagers.ManagerInstance import construct_mgm
+
 
 bl_info = {
     "name" : "BTestMK1",
@@ -27,6 +26,8 @@ bl_info = {
     "category" : "Generic"
 }
 
+
+    
 AutoLoader.init()
 
 def register():
@@ -38,6 +39,6 @@ def unregister():
     AutoLoader.unregister()
 
 if __name__ == "__main__":
+    print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
     register()
-    construct_properties()
-    construct_mgm()
+

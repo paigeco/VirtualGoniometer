@@ -7,25 +7,21 @@ from .RegionManager import RegionManager
 
 class MaterialGroupManager(object):
     def __init__(self):
-        self.p = bpy.context.active_object.cs_individual_VG_
         self.base_default_name = "Base Color"
         self.object_data_dictionary = {}
     
     def create_region(self):
-        self.p = bpy.context.active_object.cs_individual_VG_
-        p = self.p.material_regions.add()
+        p = bpy.context.active_object.cs_individual_VG_.material_regions.add()
         rm = RegionManager(p)
         return rm
     
     def create_pair(self):
-        self.p = bpy.context.active_object.cs_individual_VG_
-        p = self.p.material_pairs.add()
+        p = bpy.context.active_object.cs_individual_VG_.material_pairs.add()
         pm = PairManager(p)
         return pm
     
     def create_base_color(self):
-        self.p = bpy.context.active_object.cs_individual_VG_
-        p = self.p.base_region
+        p = bpy.context.active_object.cs_individual_VG_.base_region
         bm = RegionManager(p)
         bm.apply_all()
         return bm
@@ -36,7 +32,8 @@ class MaterialGroupManager(object):
             
             pair = self.create_pair()
             self.object_data_dictionary[context_object]['Pairs'].append(pair)
-            
+            return pair
+        
         except KeyError:
             self.construct_new_object_pair_list(context_object)
             #self.attempt_restore_object_pair_list(context_object)
@@ -60,7 +57,7 @@ class MaterialGroupManager(object):
         context_object = bpy.context.active_object
         try:
             
-            bc = self.create_region()
+            bc = self.create_base_color()
             self.object_data_dictionary[context_object]['BaseColor'] = bc
             return bc
         
@@ -73,7 +70,7 @@ class MaterialGroupManager(object):
 
     def construct_new_object_pair_list(self, context_object):
         self.object_data_dictionary[context_object] = {'Regions':[], 'Pairs':[], 'BaseColor':None}
-        self.reset_base_material()
+        #self.reset_base_material()
         
     def attempt_restore_object_pair_list(self, context_object):
         try:

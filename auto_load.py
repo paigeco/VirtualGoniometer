@@ -10,6 +10,7 @@ import importlib
 #import os
 import bpy
 #import sys
+from .construct import load_m
 
 #CUSTOM CLASS IMPORT
 
@@ -36,6 +37,8 @@ def register():
     for cls in ordered_classes:
         bpy.utils.register_class(cls)
 
+    load_m()
+    
     for module in modules:
         if module.__name__ == __name__:
             continue

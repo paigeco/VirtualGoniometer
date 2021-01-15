@@ -3,6 +3,7 @@
 
 import bpy
 from bpy.types import Panel
+from ..MaterialManagers import ManagerInstance as mi
 
 class VirtualGoniometerControlPanel(Panel):
     """Creates a Panel in the scene context of the properties editor"""
@@ -16,9 +17,10 @@ class VirtualGoniometerControlPanel(Panel):
         layout = self.layout
         scene = context.scene
         
-        if bpy.context.active_object is None:
+        if bpy.context.active_object is not None:
+            
             cpi = bpy.context.active_object.cs_individual_VG_
-            cpo = bpy.context.active_object.material_pairs
+            
             # Create an alligned column
             layout.label(text=" Projection Controls:")
             col = layout.row(align=True)
@@ -27,15 +29,12 @@ class VirtualGoniometerControlPanel(Panel):
             col.prop(scene.cs_overall_VG_, 'number_of_random_projections')
             row = layout.row()
             
-            
-            if bpy.context.active_object.cs_individual_VG_.base_material is None:
-                #base_material.attempt_recovery()
-                pass
-            
-            row.prop(
-                bpy.context.active_object.cs_individual_VG_.base_material,
-                "diffuse_color",
-                text="Base_Color")
+            #base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
+            pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
+            #row.prop(
+            #    bpy.context.active_object.cs_individual_VG_.base_material,
+            #    "diffuse_color",
+            #    text="Base_Color")
                 
             # Big render button
             layout.label(text="Perform Angle Measurement:")
@@ -65,18 +64,18 @@ class VirtualGoniometerControlPanel(Panel):
             
             if bpy.context.active_object is not None:
                 
-                if len(cpo) == 0:
+                if len(pairs) == 0:
                     data_box.label(text="Selected Angles will show here.", icon="ADD")
                     
                 else:
                     
-                    for i, pair in enumerate(cpo):
+                    for i, pair in enumerate(pairs):
                         #print(patch)
                         side_colors = data_box.row(align=True)
                         side_colors.scale_x = 0.22
                         
-                        side_colors.prop(pair.material_1.material, "diffuse_color", text="")
-                        side_colors.prop(pair.material_2.material, "diffuse_color", text="")
+                        side_colors.prop(pair.bsp.patchA.bsp.material, "diffuse_color", text="")
+                        side_colors.prop(pair.bsp.patchB.bsp.material, "diffuse_color", text="")
                         
                         sub = side_colors.row(align=True)
                         
