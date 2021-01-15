@@ -32,8 +32,10 @@ class VirtualGoniometerControlPanel(Panel):
                 #base_material.attempt_recovery()
                 pass
             
-            row.prop(bpy.context.active_object.cs_individual_VG_.base_material,
-                "diffuse_color", text="Base_Color")
+            row.prop(
+                bpy.context.active_object.cs_individual_VG_.base_material,
+                "diffuse_color",
+                text="Base_Color")
                 
             # Big render button
             layout.label(text="Perform Angle Measurement:")

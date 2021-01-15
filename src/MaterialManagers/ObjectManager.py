@@ -1,25 +1,80 @@
 """[ object docstring ]"""
 
 import bpy
+from bpy.types import OBJECT_PT_context_object, Region
 from mathutils import Color
-
-from .RegionManager import MaterialManager
 from .PairManager import PairManager
+from .RegionManager import RegionManager
 
 
 class MaterialGroupManager(object):
     def __init__(self):
-        
-        # ADD THESE TO THE SCENE CONFIG INSTEAD
-        self.base_default_color = Color((1, 1, 1)) # Might add slider later \( ~_~ )/
+        self.p = bpy.context.active_object.cs_individual_VG_
         self.base_default_name = "Base Color"
-        
-        self.object_material_pairs_dictionary = {}
-        self.object_base_color_dictionary = {}
+        self.object_data_dictionary = {}
     
-    def construct_new_object_pair_list(self,context_object):
-        self.object_material_pairs_dictionary[context_object] = []
-        self.object_base_color_dictionary[context_object] = MaterialManager(name = self.name, color = self.default_color)
+    def create_region(self):
+        self.p = bpy.context.active_object.cs_individual_VG_
+        p = self.p.material_regions.add()
+        rm = RegionManager(p)
+        return rm
+    
+    def create_pair(self):
+        self.p = bpy.context.active_object.cs_individual_VG_
+        p = self.p.material_pairs.add()
+        pm = PairManager(p)
+        return pm
+    
+    def create_base_color(self):
+        self.p = bpy.context.active_object.cs_individual_VG_
+        p = self.p.base_region
+        bm = RegionManager(p)
+        return bm
+
+    def add_pair_to_active(self):
+        context_object = bpy.context.active_object
+        try:
+            
+            pair = self.create_pair()
+            self.object_data_dictionary[context_object]['Pairs'].append(pair)
+            
+        except KeyError:
+            self.construct_new_object_pair_list(context_object)
+            #self.attempt_restore_object_pair_list(context_object)
+            self.add_pair_to_active()
+    
+    def add_region_to_active(self):
+        context_object = bpy.context.active_object
+        try:
+            
+            region = self.create_region()
+            self.object_data_dictionary[context_object]['Regions'].append(region)
+            return region
+        
+        except KeyError:
+            self.construct_new_object_pair_list(context_object)
+            #self.attempt_restore_object_pair_list(context_object)
+            self.add_region_to_active()
+
+
+    def reset_base_material(self):
+        context_object = bpy.context.active_object
+        try:
+            
+            bc = self.create_region()
+            self.object_data_dictionary[context_object]['BaseColor'] = bc
+            return bc
+        
+        except KeyError:
+            self.construct_new_object_pair_list(context_object)
+            #self.attempt_restore_object_pair_list(context_object)
+            self.reset_base_material()
+
+
+
+    def construct_new_object_pair_list(self, context_object):
+        self.object_data_dictionary[context_object] = {'Regions':[], 'Pairs':[], 'BaseColor':None}
+        self.reset_base_material()
         
     def attempt_restore_object_pair_list(self, context_object):
         try:
@@ -31,29 +86,23 @@ class MaterialGroupManager(object):
             print('Something has gone very, very wrong.')
         
         
-        if (b_length_stored > len(self.object_material_pairs_dictionary[context_object])):
+        if (b_length_stored > len(self.object_data_dictionary[context_object])):
             for pair in context_object.material_pairs:
                 print("Attempting data restore...")
                 p = PairManager()
                 p.load_from_backup(pair)
-                self.add_material_pair_to_object(context_object,p)
+                self.add_material_pair_to_object(context_object, p)
                 print("Restored: ", p.name)
                 #print("restore failed")
     
-    def return_object_material_pairs(self,context_object):
+    def return_object_material_pairs(self, context_object):
         try:
-            return self.object_material_pairs_dictionary[context_object]
+            return self.object_data_dictionary[context_object]
         except KeyError:
-            self.attempt_restore_object_pair_list(context_object)
-            return self.return_object_material_pairs(context_object)
-    
-    def add_material_pair_to_object(self, context_object, pair):
-        try:
-            self.object_material_pairs_dictionary[context_object].append(pair)
-        except KeyError:
-            self.construct_new_object_pair_list(self,context_object)
             #self.attempt_restore_object_pair_list(context_object)
-            self.add_material_pair_to_object(context_object, pair)
+            self.construct_new_object_pair_list(context_object)
+            return self.return_object_material_pairs(context_object)
+
         
     def return_active_material_pairs(self):
         if bpy.context.active_object is None:
@@ -62,9 +111,7 @@ class MaterialGroupManager(object):
             return self.return_object_material_pairs(bpy.context.active_object)
     
     def clear_active_material_pairs(self):
-        if bpy.context.active_object is None:
-            pass
-        else:
+        if bpy.context.active_object is not None:
             self.construct_new_object_pair_list(bpy.context.active_object)
     
     def return_index_and_object_of_pair_pointer(self, pair):

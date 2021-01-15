@@ -2,28 +2,28 @@ import mathutils
 import bpy
 import numpy as np
 
-class MaterialManager():
+class RegionManager():
     """ Controls a single material
     """
-    def __init__(self, name='Default', color=mathutils.Color((1, 1, 1)), material=None):
+    def __init__(self, storage_pointer, material=None, color=None):
         
-        # Construct the material index
-        self.material_index = 0
+        self.b_storage = '"'
 
         # Set color
         # Initiailize the faces
         self.faces = []
-        self.color = color
-        self.name = name
         
         # Create the constituent material
         if material is None:
             self.create_material()
+            self.color = self.b_storage.default_color
+        '''
         else:
-            self.material = material
-            self.name = material.name
-            dc  = material.diffuse_color
+            self.b_storage.material = material
+            self.b_storage.name = material.name
+            self.b_storage.dc  = material.diffuse_color
             self.color = mathutils.Color((dc[0],dc[1],dc[2]))
+        '''
         
         # Find all the faces
         self.update_faces_with_material()
@@ -34,16 +34,16 @@ class MaterialManager():
     def create_material(self):
         
         # create a new material
-        self.material = bpy.data.materials.new(name=str(self.name))
+        self.b_storage.material = bpy.data.materials.new(name=str(self.b_storage.name))
         
         # add the material to the object
-        bpy.context.active_object.data.materials.append(self.material)
+        bpy.context.active_object.data.materials.append(self.b_storage.material)
         
         # set the color
-        self.material.diffuse_color = (self.color.r ,self.color.g, self.color.b,1)
+        self.b_storage.material.diffuse_color = (self.color.r , self.color.g, self.color.b, 1)
         
         # return the object
-        return self.material
+        return self.b_storage.material
     
     def get_material_index(self):
         # get the index of the given material.
