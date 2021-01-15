@@ -1,6 +1,5 @@
 from bpy.types import Material, Object, PropertyGroup
 from bpy.props import StringProperty, PointerProperty, FloatVectorProperty, IntProperty
-from ..MaterialManagers.RegionManager import RegionManager
 import bpy
 
 def local_material_index(self):
@@ -32,6 +31,4 @@ class MaterialRegion(PropertyGroup):
     default_color: FloatVectorProperty(default=(0.0, 0.0, 0.0))
     
     context_object: PointerProperty(type=Object)
-    
-
 

@@ -1,29 +1,30 @@
 import mathutils
 import bpy
 import numpy as np
+from . import ManagerInstance
 
 class RegionManager():
     """ Controls a single material
     """
-    def __init__(self, storage_pointer, material=None, color=None):
-        
-        self.b_storage = '"'
+    def __init__(self, storage_pointer):
+        self.material_index = 0
+        self.bsp = storage_pointer
 
         # Set color
         # Initiailize the faces
         self.faces = []
         
+        self.color = mathutils.Color(self.bsp.default_color)
         # Create the constituent material
-        if material is None:
+        if self.bsp.material is None:
             self.create_material()
-            self.color = self.b_storage.default_color
-        '''
-        else:
-            self.b_storage.material = material
-            self.b_storage.name = material.name
-            self.b_storage.dc  = material.diffuse_color
-            self.color = mathutils.Color((dc[0],dc[1],dc[2]))
-        '''
+            
+
+        #else:
+        #    self.bsp.material = material
+        #    self.bsp.name = material.name
+        #    self.bsp.dc  = material.diffuse_color
+        #    self.color = mathutils.Color((dc[0],dc[1],dc[2]))
         
         # Find all the faces
         self.update_faces_with_material()
@@ -34,27 +35,24 @@ class RegionManager():
     def create_material(self):
         
         # create a new material
-        self.b_storage.material = bpy.data.materials.new(name=str(self.b_storage.name))
+        self.bsp.material = bpy.data.materials.new(name=str(self.bsp.name))
         
         # add the material to the object
-        bpy.context.active_object.data.materials.append(self.b_storage.material)
+        bpy.context.active_object.data.materials.append(self.bsp.material)
         
         # set the color
-        self.b_storage.material.diffuse_color = (self.color.r , self.color.g, self.color.b, 1)
+        self.bsp.material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1)
         
         # return the object
-        return self.b_storage.material
+        return self.bsp.material
     
     def get_material_index(self):
         # get the index of the given material.
-        for i, slot in enumerate(bpy.context.active_object.material_slots):
-            if slot.name == self.material.name_full:
-                self.material_index = i
-                return i
-        return None
+        self.material_index = self.bsp.object_material_index
+        return self.material_index
         #self.check_existance(self.material,self.destructor())
 
-    def apply_to_faces_by_face_index(self,face_indexes):
+    def apply_to_faces_by_face_index(self, face_indexes):
         original_area = bpy.context.area.type
         bpy.context.area.type = 'VIEW_3D'
 
@@ -67,7 +65,7 @@ class RegionManager():
         self.get_material_index()
         self.faces = []
         for face in bpy.context.active_object.data.polygons:
-             if face.material_index == self.material_index:
+            if face.material_index == self.material_index:
                 self.faces.append(face)
     
     def get_face_mathematical_components(self):
@@ -83,12 +81,12 @@ class RegionManager():
         self.centers = np.array(centers)
     
     def set_color_from_MU_object(self):
-        self.material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1.0)
+        self.bsp.material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1.0)
         
 
-    def check_existance(self,callback):
+    def check_existance(self, callback):
         for i in range(len(bpy.context.active_object.material_slots)):
-            if bpy.context.active_object.material_slots[i].name == self.material.name_full:
+            if bpy.context.active_object.material_slots[i].name == self.bsp.material.name_full:
                 return
         callback()
                 
@@ -96,7 +94,7 @@ class RegionManager():
         save_mode = bpy.context.active_object.mode
         
         i = self.get_material_index()
-        print(self.material.name)
+        print(self.bsp.material.name)
         print(i)
         
         # PLEASE FIX THIS LATER,,, THIS IS A HORRIFIC SOLUTION
@@ -108,16 +106,39 @@ class RegionManager():
             self.update_faces_with_material()
             
             #bm_index = base_material.active_base_material().get_material_index()
-            bm_index = 0
-            # TODO: SOLVE THE BM_INDEX
+            bm_index = ManagerInstance.Material_Group_Manager.return_active_object_entries('BaseColor').get_material_index()
+            # TODOO: SOLVE THE BM_INDEX
 
             for face in self.faces:
                 if face.material_index == i:
-                    face.material_index = bm_index#FIXED: ADD A WAY TO ACCESS THE BASE MATERIAL'S INDEX
-        
-            bpy.context.active_object.data.materials.pop(index = i)
+                    face.material_index = bm_index#FIXED: ADD A WAY TO ACCESS THE BASE MATERIAL
+
+            n = self.bsp.global_material_index
+            bpy.context.active_object.data.materials.pop(index = n)
         elif material_in_index and i is not None and save_mode == 'EDIT':
             pass   #ADD CODE HERE LAZY BONES
         #finally:
-        bpy.data.materials.remove(material = self.material)
+        bpy.data.materials.remove(material = self.bsp.material)
         bpy.ops.object.mode_set(mode = save_mode)
+        
+            
+    def apply_all(self):
+        save_mode = bpy.context.active_object.mode
+
+        i = self.get_material_index()
+        
+        if save_mode != 'OBJECT' and save_mode != 'EDIT':
+            # if our user is in sculpting mode or smthn idk
+            bpy.ops.object.mode_set(mode = 'EDIT')
+            
+        if save_mode == 'OBJECT':
+            # runs in n time so like not great for large meshes, might wanna change this
+            for p in bpy.context.active_object.data.polygons:
+                p.material_index = i
+                
+        elif save_mode == 'EDIT':
+            # this is ugly as i'll get out but it works so oh well
+            bpy.context.object.active_material_index = i
+            bpy.ops.mesh.select_all(action='SELECT')
+            bpy.ops.object.material_slot_assign()
+            bpy.ops.mesh.select_all(action='DESELECT')

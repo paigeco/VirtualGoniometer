@@ -1,7 +1,7 @@
 """ [ Object Properties ] """
 from bpy.props import IntProperty, BoolVectorProperty, PointerProperty
 from bpy.props import BoolProperty, CollectionProperty
-from bpy.types import PropertyGroup, Object, Material
+from bpy.types import PropertyGroup, Object
 from .PairProperties import MaterialPair
 from .RegionProperties import MaterialRegion
 
