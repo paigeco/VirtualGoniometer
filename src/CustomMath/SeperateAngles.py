@@ -19,6 +19,5 @@ def seperate_angles(selected_polygon_pointers=None, center=(0, 0, 0)):
 
         # Retrive indices of nearest neighbor vertices
         J = LPIs[k] # Indices of verices in neighborhood patch
-        p = mi.Material_Group_Manager.add_pair_to_active()
-        p.construct_new(c_polygon_pointer=selected_polygon_pointers[k])
+        p = mi.Material_Group_Manager.add_pair_to_active(cp=selected_polygon_pointers[k])
         p.apply_pair_within_region(CNs, J)

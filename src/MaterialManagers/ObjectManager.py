@@ -15,9 +15,10 @@ class MaterialGroupManager(object):
         rm = RegionManager(p)
         return rm
     
-    def create_pair(self):
+    def create_pair(self,cpolygon_pointer):
         p = bpy.context.active_object.cs_individual_VG_.material_pairs.add()
         pm = PairManager(p)
+        pm.construct_new(c_polygon_pointer=cpolygon_pointer)
         return pm
     
     def create_base_color(self):
@@ -26,11 +27,11 @@ class MaterialGroupManager(object):
         bm.apply_all()
         return bm
 
-    def add_pair_to_active(self):
+    def add_pair_to_active(self, cp=None):
         context_object = bpy.context.active_object
         try:
             
-            pair = self.create_pair()
+            pair = self.create_pair(cp)
             self.object_data_dictionary[context_object]['Pairs'].append(pair)
             return pair
         

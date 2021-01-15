@@ -18,11 +18,8 @@ class PairManager(object):
         self.material_2 = None
         self.n1, self.n2, self.patch_normal_1, self.patch_normal_2 = None, None, None, None
         self.material_index_1 = 0
+        self.check_index = 0
         self.material_index_2 = 0
-    
-    def add_pair_to_blender_storage(self):
-        # add a new item to the list
-        self.bsp = bpy.context.active_object.material_pairs.add()  
         
     def load_from_backup(self, backup_pointer):
         self.bsp = backup_pointer
@@ -34,12 +31,11 @@ class PairManager(object):
         #self.add_pair_to_blender_storage()
         if c_polygon_pointer is None:
             # give the coordinates of the center of the pair
-            #self.check_index = 0
-            pass
+            self.check_index = 0
         else:
             # Pass in the center poly pointer
             #self.c_polygon_pointer = c_polygon_pointer
-            #self.check_index = c_polygon_pointer.index
+            self.check_index = c_polygon_pointer.index
             self.bsp.center = list(c_polygon_pointer.center)
 
         #self.add_pair_to_blender_storage()
