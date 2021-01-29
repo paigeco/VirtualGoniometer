@@ -16,8 +16,7 @@ class RegionManager():
         
         self.color = mathutils.Color(self.bsp.default_color)
         # Create the constituent material
-        if self.bsp.material is None:
-            self.create_material()
+        self.create_material()
             
 
         #else:
@@ -35,14 +34,16 @@ class RegionManager():
     def create_material(self):
         
         # create a new material
-        self.bsp.material = bpy.data.materials.new(name=str(self.bsp.name))
+        material = bpy.data.materials.new(name=str(self.bsp.name))
         
         # add the material to the object
-        bpy.context.active_object.data.materials.append(self.bsp.material)
+        
+        self.bsp.context_object.data.materials.append(material)
         
         # set the color
-        self.bsp.material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1)
+        material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1)
         
+        self.bsp.material = material
         # return the object
         return self.bsp.material
     
@@ -55,6 +56,7 @@ class RegionManager():
     def apply_to_faces_by_face_index(self, face_indexes):
         original_area = bpy.context.area.type
         bpy.context.area.type = 'VIEW_3D'
+
 
         self.get_material_index()
         for index in face_indexes:
@@ -129,7 +131,7 @@ class RegionManager():
         
         if save_mode != 'OBJECT' and save_mode != 'EDIT':
             # if our user is in sculpting mode or smthn idk
-            bpy.ops.object.mode_set(mode = 'EDIT')
+            bpy.ops.object.mode_set(mode='EDIT')
             
         if save_mode == 'OBJECT':
             # runs in n time so like not great for large meshes, might wanna change this
@@ -142,3 +144,5 @@ class RegionManager():
             bpy.ops.mesh.select_all(action='SELECT')
             bpy.ops.object.material_slot_assign()
             bpy.ops.mesh.select_all(action='DESELECT')
+        
+        bpy.ops.object.mode_set(mode=save_mode)

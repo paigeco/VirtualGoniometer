@@ -28,7 +28,7 @@ class MaterialRegion(PropertyGroup):
     
     material: PointerProperty(type=Material)
     
-    default_color: FloatVectorProperty(default=(0.0, 0.0, 0.0))
+    default_color: FloatVectorProperty(default=(1.0, 1.0, 1.0))
     
     context_object: PointerProperty(type=Object)
 

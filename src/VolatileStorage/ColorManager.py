@@ -1,5 +1,5 @@
 """[ code for generating color blind friendly color pairs ]"""
-from bpy import context as C
+import bpy
 from .AccesibleColors import DIFFERENTIABLE_COLORS
 
 # IT HAD TO BE DONE THIS WAY FOR ACCESIBILITY REASONS
@@ -14,7 +14,7 @@ class ColorPairs():
     def __init__(self):
         try:
             # Pull the access level
-            self.access_level = C.scene.cs_overall_VG_.accesibility_level
+            self.access_level = bpy.context.scene.cs_overall_VG_.accesibility_level
             
             # Pull the active colors
             self.active_colors = self.color_compresser(self.access_level)
@@ -72,7 +72,7 @@ class ColorPairs():
         Returns:
             [type]: [description]
         """
-        al = C.scene.cs_overall_VG_.accesibility_level
+        al = bpy.context.scene.cs_overall_VG_.accesibility_level
         self.active_colors = self.color_compresser(al)
         # if sum([n for n in len(self.active_colors)])
         # TODO ADD LOOPING FOR ERROR ISSUES

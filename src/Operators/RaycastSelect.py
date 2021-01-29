@@ -3,8 +3,8 @@ from bpy.types import Operator
 import bpy
 from bpy import ops as O
 
-from .RaycastFunctions.DoRaycast import do_raycast
-from .RaycastFunctions.CallbackOptions import move_cursor, run_by_selection
+from .DoRaycast import do_raycast
+from .CallbackOptions import move_cursor, run_by_selection
 
 
 class PerformRaycastSelect(Operator):

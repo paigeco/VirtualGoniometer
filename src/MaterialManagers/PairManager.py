@@ -24,8 +24,8 @@ class PairManager(object):
     def load_from_backup(self, backup_pointer):
         self.bsp = backup_pointer
                 
-        self.material_1 = RegionManager(self.bsp.patchA)
-        self.material_2 = RegionManager(self.bsp.patchA)
+        self.material_1 = RegionManager(self.bsp.patch_A)
+        self.material_2 = RegionManager(self.bsp.patch_B)
 
     def construct_new(self, c_polygon_pointer=None):
         #self.add_pair_to_blender_storage()
@@ -49,14 +49,14 @@ class PairManager(object):
         # set the color objects from the pair list
         o_color1, o_color2 = self.generate_color_objects()
         
-        self.bsp.patchA.default_color = list(o_color1)
-        self.bsp.patchB.default_color = list(o_color2)
+        self.bsp.patch_A.default_color = list(o_color1)
+        self.bsp.patch_B.default_color = list(o_color2)
         
-        self.bsp.patchA.name = str(self.bsp.name + " Face (1)")
-        self.bsp.patchB.name = str(self.bsp.name + " Face (2)")
+        self.bsp.patch_A.name = str(self.bsp.name + " Face (1)")
+        self.bsp.patch_B.name = str(self.bsp.name + " Face (2)")
         # create the materials
-        self.material_1 = RegionManager(self.bsp.patchA)
-        self.material_2 = RegionManager(self.bsp.patchB)
+        self.material_1 = RegionManager(self.bsp.patch_A)
+        self.material_2 = RegionManager(self.bsp.patch_B)
         
         self.bsp.side_1_material = self.material_1.bsp.material
         self.bsp.side_2_material = self.material_2.bsp.material
@@ -111,10 +111,10 @@ class PairManager(object):
         T = int(self.bso.number_of_random_projections)
         #Output:f
         #   C = Clusters (C==1 and C==2 are the two detected clusters)
-        C,self.n1, self.n2, self.bsp.theta = ClusteringMeanRP1D(P,N,T)
+        C,self.n1, self.n2, self.bsp.theta = ClusteringMeanRP1D(P, N, T)
         #P1 = P[C==1,:]     #P2 = P[C==2,:]
-        J1 = J[C==1]
-        J2 = J[C==2]
+        J1 = J[C == 1]
+        J2 = J[C == 2]
         
         self.apply_to_face_pair_by_indexes(J1,J2)
 
@@ -130,4 +130,3 @@ class PairManager(object):
         
         co.material_pairs.remove(i)
         ManagerInstance.Material_Group_Manager.destroy_by_index(i, 'Pairs', destroy=False)
-

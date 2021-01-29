@@ -10,28 +10,36 @@ class MaterialGroupManager(object):
         self.base_default_name = "Base Color"
         self.object_data_dictionary = {}
     
-    def create_region(self):
-        p = bpy.context.active_object.cs_individual_VG_.material_regions.add()
+    def create_region(self, context):
+        p = context.active_object.cs_individual_VG_.material_regions.add()
         rm = RegionManager(p)
         return rm
     
-    def create_pair(self,cpolygon_pointer):
-        p = bpy.context.active_object.cs_individual_VG_.material_pairs.add()
+    def create_pair(self, context, cpolygon_pointer):
+        p = context.active_object.cs_individual_VG_.material_pairs.add()
         pm = PairManager(p)
         pm.construct_new(c_polygon_pointer=cpolygon_pointer)
         return pm
     
-    def create_base_color(self):
-        p = bpy.context.active_object.cs_individual_VG_.base_region
+    def create_base_color(self, context):
+        p = context.active_object.cs_individual_VG_.base_region
+        p.name = self.base_default_name
+        p.context_object = context.active_object
         bm = RegionManager(p)
         bm.apply_all()
         return bm
 
-    def add_pair_to_active(self, cp=None):
-        context_object = bpy.context.active_object
+    def add_pair_to_active(self, context=None, cp=None):
+        context = bpy.context if context is None else context
+        context_object = context.active_object
+        
         try:
+            # Ensure a base color exists
+            s = self.object_data_dictionary[context_object]['BaseColor']
+            _ = self.reset_base_material(context=context) if s is None else None
             
-            pair = self.create_pair(cp)
+            #Create a pair
+            pair = self.create_pair(context, cp)
             self.object_data_dictionary[context_object]['Pairs'].append(pair)
             return pair
         
@@ -40,25 +48,30 @@ class MaterialGroupManager(object):
             #self.attempt_restore_object_pair_list(context_object)
             self.add_pair_to_active()
     
-    def add_region_to_active(self):
-        context_object = bpy.context.active_object
+    def add_region_to_active(self, context=None):
+        context = bpy.context if context is None else context
+        context_object = context.active_object
         try:
+            # Ensure a base color exists
+            s = self.object_data_dictionary[context_object]['BaseColor']
+            _ = self.reset_base_material(context=context) if s is None else None
             
-            region = self.create_region()
+            # Create a region
+            region = self.create_region(context_object)
             self.object_data_dictionary[context_object]['Regions'].append(region)
             return region
         
         except KeyError:
             self.construct_new_object_pair_list(context_object)
             #self.attempt_restore_object_pair_list(context_object)
-            self.add_region_to_active()
+            self.add_region_to_active(context=context)
 
 
-    def reset_base_material(self):
-        context_object = bpy.context.active_object
+    def reset_base_material(self, context=None):
+        context = bpy.context if context is None else context
+        context_object = context.active_object
         try:
-            
-            bc = self.create_base_color()
+            bc = self.create_base_color(context)
             self.object_data_dictionary[context_object]['BaseColor'] = bc
             return bc
         

@@ -21,20 +21,26 @@ class VirtualGoniometerControlPanel(Panel):
             
             cpi = bpy.context.active_object.cs_individual_VG_
             
-            # Create an alligned column
-            layout.label(text=" Projection Controls:")
-            col = layout.row(align=True)
-            nonn_text = 'Points to include in auto-generated region'
-            col.prop(scene.cs_overall_VG_, 'number_of_nearest_neighbors', text=nonn_text)
-            col.prop(scene.cs_overall_VG_, 'number_of_random_projections')
-            row = layout.row()
-            
-            #base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
+            base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
             pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
-            #row.prop(
-            #    bpy.context.active_object.cs_individual_VG_.base_material,
-            #    "diffuse_color",
-            #    text="Base_Color")
+            
+            layout.label(text='Base Color Selector:')
+            row = layout.row()
+            if base is not None:
+                row.prop(
+                    cpi.base_region.material,
+                    "diffuse_color",
+                    text="Base Color"
+                    )
+            else:
+                layout.label(text="Take a Measurement to Change Base Color", icon="ADD")
+                #original_area = bpy.context.area.type
+                #bpy.context.area.type = 'VIEW_3D'
+                
+                #override = overide_to_3d_view(context=context)
+                #O.view3d.recreate_base_material(override) # pylint: disable=no-member
+                
+                #bpy.context.area.type = original_area
                 
             # Big render button
             layout.label(text="Perform Angle Measurement:")
@@ -65,7 +71,7 @@ class VirtualGoniometerControlPanel(Panel):
             if bpy.context.active_object is not None:
                 
                 if len(pairs) == 0:
-                    data_box.label(text="Selected Angles will show here.", icon="ADD")
+                    data_box.label(text="Selected Angles Will Be Shown Here", icon="ADD")
                     
                 else:
                     

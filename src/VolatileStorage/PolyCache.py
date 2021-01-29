@@ -1,7 +1,6 @@
-""" A hotfix to save memory and cpu operations
-"""
+""" A hotfix to save memory and cpu operations """
 
-from bpy import context as C
+import bpy
 from numpy import array
 
 # STORAGE >> POLYCACHE ( FILE )
@@ -12,16 +11,15 @@ class FaceCache():
     def __init__(self):
         self.check_poly = None
         self.all_centers_and_normals = None
-        #self.ensure_cache()
        
     def ensure_cache(self):
         """ [ ensures that the cache is up to date]
         """
         #TODO: Implement a random set version of this code instead, but this will do for now
         try:
-            if len(C.active_object.data.polygons) > 0:
-                if self.check_poly != C.active_object.data.polygons[0]:
-                    self.check_poly = C.active_object.data.polygons[0]
+            if len(bpy.context.active_object.data.polygons) > 0:
+                if self.check_poly != bpy.context.active_object.data.polygons[0]:
+                    self.check_poly = bpy.context.active_object.data.polygons[0]
                     self.reset_cache()
                 else:
                     pass
@@ -34,7 +32,7 @@ class FaceCache():
         """ [ reruns the cache ]
         """
         #TODO: Good candidate for multiprocessing
-        polys = C.active_object.data.polygons
+        polys = bpy.context.active_object.data.polygons
         self.all_centers_and_normals = array(list(map(lambda p: [p.center, p.normal], polys)))
     
     def get_centers_and_normals(self):

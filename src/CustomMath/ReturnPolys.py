@@ -16,6 +16,8 @@ def get_data_from_selected_object(selected_polygon_pointers):
     all_centers_and_normals = []
     all_selected_centers = []
     
+    bpy.ops.object.mode_set(mode='OBJECT')
+    
     if bpy.context.active_object.mode == 'EDIT':
         # get the selected object
         #obj = bpy.context.active_object
