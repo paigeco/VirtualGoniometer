@@ -13,6 +13,7 @@ def get_data_from_selected_object(selected_polygon_pointers):
         pass
         print("ALL GOOD")
     '''
+    
     all_centers_and_normals = []
     all_selected_centers = []
     
@@ -43,7 +44,7 @@ def get_data_from_selected_object(selected_polygon_pointers):
         all_selected_centers = array(list(map(lambda p: p.center, selected_polygon_pointers)))
     
     num_neigbors = int(bpy.context.scene.cs_overall_VG_.number_of_nearest_neighbors)
-    local_patch_indexes = NearestNeighbors3D(all_centers_and_normals[:, 0],
+    local_patch_indexes = NearestNeighbors3D(all_centers_and_normals[0],
                                              all_selected_centers,
                                              num_neigbors
                                              )

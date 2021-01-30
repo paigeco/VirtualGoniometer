@@ -9,8 +9,8 @@ def do_raycast(context, event, callback):
     coord = event.mouse_region_x, event.mouse_region_y
 
     # get the ray from the viewport and mouse
-    view_vector = view3d_utils.region_2d_to_vector_3d(region, rv3d, coord)
-    ray_origin = view3d_utils.region_2d_to_origin_3d(region, rv3d, coord)
+    view_vector = view3d_utils.region_2d_to_vector_3d(region, rv3d, coord) #pylint: disable=assignment-from-no-return
+    ray_origin = view3d_utils.region_2d_to_origin_3d(region, rv3d, coord) #pylint: disable=assignment-from-no-return
 
     ray_target = ray_origin + view_vector
 
@@ -50,6 +50,7 @@ def do_raycast(context, event, callback):
     for obj, matrix in visible_objects_and_duplis():
         if obj.type == 'MESH':
             hit, normal, face_index = obj_ray_cast(obj, matrix)
+            _ = normal
             if hit is not None:
                 hit_world = matrix @ hit
                 callback(scene, context, hit_world, face_index)

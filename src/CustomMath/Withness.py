@@ -16,4 +16,4 @@ def withness(x):
     ind = np.argmin(v)
     m = x[ind]
     w = v[ind]
-    return w,m
+    return w, m

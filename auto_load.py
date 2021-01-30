@@ -163,7 +163,6 @@ def iter_classes_to_register(modules): # pylint: disable=redefined-outer-name
         if any(base in base_types for base in cls.__bases__):
             if not getattr(cls, "is_registered", False):
                 yield cls
-
 def get_classes_in_modules(modules): # pylint: disable=redefined-outer-name
     """[ ]"""
     classes = set()

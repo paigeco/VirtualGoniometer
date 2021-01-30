@@ -24,13 +24,3 @@ class MaterialPair(bpy.types.PropertyGroup):
     # patches
     patch_A: bpy.props.PointerProperty(type=MaterialRegion)    
     patch_B: bpy.props.PointerProperty(type=MaterialRegion)
-     
-    # The hue property
-    # o_color_1: bpy.props.FloatVectorProperty(default = (0.0,0.0,0.0))
-    # o_color_2: bpy.props.FloatVectorProperty(default = (0.0,0.0,0.0))
-    
-    # add the material pointers
-    # side_1_material: bpy.props.PointerProperty(type=bpy.types.Material)
-    # side_2_material: bpy.props.PointerProperty(type=bpy.types.Material)
-
-

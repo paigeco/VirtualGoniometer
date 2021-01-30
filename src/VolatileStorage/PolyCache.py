@@ -1,7 +1,7 @@
 """ A hotfix to save memory and cpu operations """
 
 import bpy
-from numpy import array
+from numpy import array, reshape, stack
 
 # STORAGE >> POLYCACHE ( FILE )
 class FaceCache():
@@ -29,11 +29,22 @@ class FaceCache():
             pass        
                 
     def reset_cache(self):
-        """ [ reruns the cache ]
-        """
-        #TODO: Good candidate for multiprocessing
+        """ Redownloads the data for the cache """
         polys = bpy.context.active_object.data.polygons
-        self.all_centers_and_normals = array(list(map(lambda p: [p.center, p.normal], polys)))
+        n = len(polys)
+        li = [None]*n*3
+        
+        polys.foreach_get('center', li)
+        centers = array(li)
+        centers = reshape(centers, (n, 3))
+        
+        polys.foreach_get('normal', li)
+        normals = array(li)
+        del li
+        
+        normals = reshape(normals, (n, 3))
+        self.all_centers_and_normals = array([centers.tolist(), normals.tolist()])
+        print(self.all_centers_and_normals.shape)
     
     def get_centers_and_normals(self):
         """[gets the centers_and_normals]

@@ -5,7 +5,6 @@ from ..CustomMath.CalculateAngle import get_angle
 from ..CustomMath.RP1DClustering import ClusteringMeanRP1D
 from ..VolatileStorage.ColorManager import ColorPairs
 from .RegionManager import RegionManager
-from . import ManagerInstance
 
 
 class PairManager(object):
@@ -112,8 +111,8 @@ class PairManager(object):
         #   N = nx3 array of vertex normals
         #   Can also use N as face normals, and P as face centroids
         #   T = Number of random projections to use (default T=100)
-        P = CNs[J, 0] #mx3 array of x,y,z coordinates for all m vertices in patch
-        N = CNs[J, 1] #mx3 array of x,y,z coordinates of
+        P = CNs[0, J] #mx3 array of x,y,z coordinates for all m vertices in patch
+        N = CNs[1, J] #mx3 array of x,y,z coordinates of
         # unit outward normal vectors to vertices in patch
         T = int(self.bso.number_of_random_projections)
         #Output:f
@@ -133,4 +132,4 @@ class PairManager(object):
         
         self.material_1.destroy()
         self.material_2.destroy()
-        self.bso.material_pairs.remove(self.bsp.index)
+        self.bsa.material_pairs.remove(self.bsp.index)

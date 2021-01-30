@@ -22,7 +22,7 @@ class MaterialRegion(PropertyGroup):
     
     global_material_index: IntProperty(get=global_material_index)
     
-    object_material_index: IntProperty(get=local_material_index)
+    local_material_index: IntProperty(get=local_material_index)
     
     #object_region_index: IntProperty(get=)
     

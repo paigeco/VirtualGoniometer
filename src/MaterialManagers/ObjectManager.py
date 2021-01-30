@@ -10,18 +10,30 @@ class MaterialGroupManager(object):
         self.base_default_name = "Base Color"
         self.object_data_dictionary = {}
     
-    def create_region(self, context):
+    def create_region(self, context) -> RegionManager:
+        """ Create a new region
+
+        Parameters
+        ----------
+        context: [ bpy.context ]
+            ( the active context )
+
+        Returns
+        -------
+        RegionManager:
+            ( of the given region )
+        """
         p = context.active_object.cs_individual_VG_.material_regions.add()
         rm = RegionManager(p)
         return rm
     
-    def create_pair(self, context, cpolygon_pointer):
+    def create_pair(self, context, cpolygon_pointer) -> PairManager:
         p = context.active_object.cs_individual_VG_.material_pairs.add()
         pm = PairManager(p)
         pm.construct_new(c_polygon_pointer=cpolygon_pointer)
         return pm
     
-    def create_base_color(self, context):
+    def create_base_color(self, context) -> RegionManager:
         p = context.active_object.cs_individual_VG_.base_region
         p.name = self.base_default_name
         p.context_object = context.active_object
@@ -29,7 +41,7 @@ class MaterialGroupManager(object):
         bm.apply_all()
         return bm
 
-    def add_pair_to_active(self, context=None, cp=None):
+    def add_pair_to_active(self, context=None, cp=None) -> PairManager:
         context = bpy.context if context is None else context
         context_object = context.active_object
         
@@ -48,7 +60,19 @@ class MaterialGroupManager(object):
             #self.attempt_restore_object_pair_list(context_object)
             self.add_pair_to_active()
     
-    def add_region_to_active(self, context=None):
+    def add_region_to_active(self, context=None) -> RegionManager:
+        """Add a region to the active object context
+
+        Parameters
+        ----------
+        context : [ bpy.context ], optional
+            [description], by default None
+
+        Returns
+        -------
+        RegionManager:
+            returns a RegionManager object for the corresponding region
+        """
         context = bpy.context if context is None else context
         context_object = context.active_object
         try:
@@ -67,7 +91,16 @@ class MaterialGroupManager(object):
             self.add_region_to_active(context=context)
 
 
-    def reset_base_material(self, context=None):
+    def reset_base_material(self, context=None) -> RegionManager:
+        """Resets the base material
+
+        Parameters
+        ----------
+        context : [ bpy.context ], optional
+        
+            the context in which to reset, by default None
+
+        """
         context = bpy.context if context is None else context
         context_object = context.active_object
         try:
@@ -82,7 +115,14 @@ class MaterialGroupManager(object):
 
 
 
-    def construct_new_object_pair_list(self, context_object):
+    def construct_new_object_pair_list(self, context_object) -> None:
+        """
+        Reset the object pair list.
+        
+        Args:
+        ----------
+        context_object (bpy.types.Object): [description]
+        """
         self.object_data_dictionary[context_object] = {'Regions':[], 'Pairs':[], 'BaseColor':None}
         #self.reset_base_material()
     
@@ -181,8 +221,10 @@ class MaterialGroupManager(object):
             pair_pointer.destroy()
     
     def resync(self, context_object=None):
-        if context_object is None:
-            context_object = bpy.context.active_object
-        b_pairs = bpy.context.active_object.material_pairs.values()
-        for i, pair in enumerate(self.return_object_entries(context_object, 'Pairs')):
-            pair.blender_store_pointer = b_pairs[i]
+        co = bpy.context.active_object if context_object is None else context_object
+        
+        b_pairs = co.cs_individual_VG_.material_pairs.values()
+        
+        for i, pair in enumerate(self.return_object_entries(co, 'Pairs')):
+            print(pair.bsp.name)
+            pair.bsp = b_pairs[i]

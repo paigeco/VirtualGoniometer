@@ -39,6 +39,5 @@ def unregister():
     AutoLoader.unregister()
 
 if __name__ == "__main__":
-    print('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
     register()
 

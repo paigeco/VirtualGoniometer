@@ -20,7 +20,7 @@ class VirtualGoniometerControlPanel(Panel):
         if bpy.context.active_object is not None:
             
             cpi = bpy.context.active_object.cs_individual_VG_
-            
+
             base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
             pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
             
@@ -93,7 +93,11 @@ class VirtualGoniometerControlPanel(Panel):
                         edits = sub.row(align=True)
                         edits.scale_x = 0.45
                         
-                        d = cpi.depressed
+                        if i == cpi.active_patch_index:
+                            d = cpi.depressed
+                        else:
+                            d = (False, False)
+                        
                         edits.operator("view3d.editside", text='1', depress=d[0]).options = (1, i)
                         edits.operator("view3d.editside", text='2', depress=d[1]).options = (2, i)
                         

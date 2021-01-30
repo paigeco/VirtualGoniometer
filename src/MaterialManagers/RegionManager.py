@@ -1,7 +1,6 @@
 import mathutils
 import bpy
 import numpy as np
-from . import ManagerInstance
 
 class RegionManager():
     """ Controls a single material
@@ -17,7 +16,7 @@ class RegionManager():
         self.color = mathutils.Color(self.bsp.default_color)
         # Create the constituent material
         self.create_material()
-            
+        
 
         #else:
         #    self.bsp.material = material
@@ -49,7 +48,7 @@ class RegionManager():
     
     def get_material_index(self):
         # get the index of the given material.
-        self.material_index = self.bsp.object_material_index
+        self.material_index = self.bsp.local_material_index
         if self.material_index != 2147483647:
             return self.material_index
         else:
@@ -107,6 +106,7 @@ class RegionManager():
         if l_index != 2147483647: # l_index is set to the largest index if the material is not found
             li = [None]*len(p)
             
+            
             p.foreach_get('material_index', li)
             
             for i, l in enumerate(li):
@@ -121,14 +121,14 @@ class RegionManager():
         if g_index != 2147483647:
             bpy.data.materials.remove(material=self.bsp.material)     
     
-        if self.bsp in cpi.material_regions:
-            cpi.material_regions.remove(self.bsp)       
+        #cpi.material_regions.remove(self.bsp)       
         
         
     def apply_all(self):
-        """ [ Applies the given region to to the context object ]
+        """ [ Applies the given region to the context objects ]
         """
         material_index = self.get_material_index()
+        
         p = self.bsp.context_object.data.polygons
         li = [material_index]*len(p)
         p.foreach_set('material_index', li)
