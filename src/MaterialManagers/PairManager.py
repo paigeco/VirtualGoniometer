@@ -49,6 +49,11 @@ class PairManager(object):
         # set the color objects from the pair list
         o_color1, o_color2 = self.generate_color_objects()
         
+        self.bsp.context_object = self.context.active_object
+        
+        self.bsp.patch_A.context_object = self.context.active_object
+        self.bsp.patch_B.context_object = self.context.active_object
+        
         self.bsp.patch_A.default_color = list(o_color1)
         self.bsp.patch_B.default_color = list(o_color2)
         
@@ -57,6 +62,7 @@ class PairManager(object):
         # create the materials
         self.material_1 = RegionManager(self.bsp.patch_A)
         self.material_2 = RegionManager(self.bsp.patch_B)
+        
         
         self.bsp.side_1_material = self.material_1.bsp.material
         self.bsp.side_2_material = self.material_2.bsp.material
@@ -106,27 +112,25 @@ class PairManager(object):
         #   N = nx3 array of vertex normals
         #   Can also use N as face normals, and P as face centroids
         #   T = Number of random projections to use (default T=100)
-        P = CNs[J,0] #mx3 array of x,y,z coordinates for all m vertices in patch
-        N = CNs[J,1]  #mx3 array of x,y,z coordinates of unit outward normal vectors to vertices in patch
+        P = CNs[J, 0] #mx3 array of x,y,z coordinates for all m vertices in patch
+        N = CNs[J, 1] #mx3 array of x,y,z coordinates of
+        # unit outward normal vectors to vertices in patch
         T = int(self.bso.number_of_random_projections)
         #Output:f
         #   C = Clusters (C==1 and C==2 are the two detected clusters)
-        C,self.n1, self.n2, self.bsp.theta = ClusteringMeanRP1D(P, N, T)
+        C, self.n1, self.n2, self.bsp.theta = ClusteringMeanRP1D(P, N, T)
         #P1 = P[C==1,:]     #P2 = P[C==2,:]
         J1 = J[C == 1]
         J2 = J[C == 2]
         
-        self.apply_to_face_pair_by_indexes(J1,J2)
+        self.apply_to_face_pair_by_indexes(J1, J2)
+        
 
         print(self.bsp.name + " has a theta of " +str(self.bsp.theta))
 
     
     def destroy(self):
-        co = bpy.context.active_object
-        i = self.bsp.index
         
         self.material_1.destroy()
         self.material_2.destroy()
-        
-        co.material_pairs.remove(i)
-        ManagerInstance.Material_Group_Manager.destroy_by_index(i, 'Pairs', destroy=False)
+        self.bso.material_pairs.remove(self.bsp.index)

@@ -85,7 +85,39 @@ class MaterialGroupManager(object):
     def construct_new_object_pair_list(self, context_object):
         self.object_data_dictionary[context_object] = {'Regions':[], 'Pairs':[], 'BaseColor':None}
         #self.reset_base_material()
+    
+    def remove_item(self, manager_type, index, context=None) -> bool:
+        """
+        Removes an item from the manager and lets it get removed by the
+        garbage collection routine.
+
+        Args:
+        ----------
+            managertype (str): (in tuple ('Regions','Pairs','BaseColor'))
+            index (int): (the index of the item to be removed)
+            context (bpy.context, optional): '(put in the current context).' Defaults to None.
+
+        Returns:
+        ----------
+            (bool) - (returns a boolean of whether or query not successful)
+        """
         
+        context_object = bpy.context.active_object if context is None else context.active_object
+        
+        if context_object not in self.object_data_dictionary:
+            return False
+        elif manager_type not in self.object_data_dictionary[context_object]:
+            return False
+        elif index > len(self.object_data_dictionary[context_object][manager_type]):
+            return False
+        else:
+            self.object_data_dictionary[context_object][manager_type].pop(index)
+            return True
+    
+    
+    
+    
+    
     def attempt_restore_object_pair_list(self, context_object):
         try:
             b_length_stored = len(context_object.material_pairs)

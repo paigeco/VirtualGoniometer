@@ -15,7 +15,7 @@ class VirtualGoniometerControlPanel(Panel):
     ANGLE_PRECISION = 1
     def draw(self, context):
         layout = self.layout
-        scene = context.scene
+        #scene = context.scene
         
         if bpy.context.active_object is not None:
             
@@ -26,6 +26,8 @@ class VirtualGoniometerControlPanel(Panel):
             
             layout.label(text='Base Color Selector:')
             row = layout.row()
+            
+            
             if base is not None:
                 row.prop(
                     cpi.base_region.material,
@@ -80,15 +82,13 @@ class VirtualGoniometerControlPanel(Panel):
                         side_colors = data_box.row(align=True)
                         side_colors.scale_x = 0.22
                         
-                        side_colors.prop(pair.bsp.patchA.bsp.material, "diffuse_color", text="")
-                        side_colors.prop(pair.bsp.patchB.bsp.material, "diffuse_color", text="")
+                        side_colors.prop(pair.bsp.patch_A.material, "diffuse_color", text="")
+                        side_colors.prop(pair.bsp.patch_B.material, "diffuse_color", text="")
                         
                         sub = side_colors.row(align=True)
-                        
-                        
 
                         sub.prop(pair.bsp, 'name', text="")
-                        sub.label(text='( '+str(round(pair.theta, self.ANGLE_PRECISION))+'° )')
+                        sub.label(text='( '+str(round(pair.bsp.theta, self.ANGLE_PRECISION))+'° )')
                         
                         edits = sub.row(align=True)
                         edits.scale_x = 0.45

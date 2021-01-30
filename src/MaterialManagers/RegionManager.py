@@ -50,8 +50,11 @@ class RegionManager():
     def get_material_index(self):
         # get the index of the given material.
         self.material_index = self.bsp.object_material_index
-        return self.material_index
-        #self.check_existance(self.material,self.destructor())
+        if self.material_index != 2147483647:
+            return self.material_index
+        else:
+            pass
+            #Attempt restore and if not, delete parent pair
 
     def apply_to_faces_by_face_index(self, face_indexes):
         original_area = bpy.context.area.type
@@ -92,57 +95,43 @@ class RegionManager():
                 return
         callback()
                 
-    def destroy(self, material_in_index = True):
-        save_mode = bpy.context.active_object.mode
+    def destroy(self):
+        cpi = bpy.context.active_object.cs_individual_VG_
+        p = self.bsp.context_object.data.polygons
         
-        i = self.get_material_index()
-        print(self.bsp.material.name)
-        print(i)
+        bm_index = cpi.base_region.local_material_index
         
-        # PLEASE FIX THIS LATER,,, THIS IS A HORRIFIC SOLUTION
-        if save_mode != 'OBJECT':
-            bpy.ops.object.mode_set(mode = 'OBJECT')
         
-        if material_in_index and i is not None and save_mode == 'OBJECT':
+        # Resets the material patches to remove the 
+        l_index = self.bsp.local_material_index
+        if l_index != 2147483647: # l_index is set to the largest index if the material is not found
+            li = [None]*len(p)
             
-            self.update_faces_with_material()
+            p.foreach_get('material_index', li)
             
-            #bm_index = base_material.active_base_material().get_material_index()
-            bm_index = ManagerInstance.Material_Group_Manager.return_active_object_entries('BaseColor').get_material_index()
-            # TODOO: SOLVE THE BM_INDEX
-
-            for face in self.faces:
-                if face.material_index == i:
-                    face.material_index = bm_index#FIXED: ADD A WAY TO ACCESS THE BASE MATERIAL
-
-            n = self.bsp.global_material_index
-            bpy.context.active_object.data.materials.pop(index = n)
-        elif material_in_index and i is not None and save_mode == 'EDIT':
-            pass   #ADD CODE HERE LAZY BONES
-        #finally:
-        bpy.data.materials.remove(material = self.bsp.material)
-        bpy.ops.object.mode_set(mode = save_mode)
+            for i, l in enumerate(li):
+                if l_index == l:
+                    li[i] = bm_index
+            
+            p.foreach_set('material_index', li)
+            bpy.context.active_object.data.materials.pop(index=l_index)
         
-            
+        # Removes the material from the data if it hasn't been already
+        g_index = self.bsp.local_material_index
+        if g_index != 2147483647:
+            bpy.data.materials.remove(material=self.bsp.material)     
+    
+        if self.bsp in cpi.material_regions:
+            cpi.material_regions.remove(self.bsp)       
+        
+        
     def apply_all(self):
-        save_mode = bpy.context.active_object.mode
-
-        i = self.get_material_index()
+        """ [ Applies the given region to to the context object ]
+        """
+        material_index = self.get_material_index()
+        p = self.bsp.context_object.data.polygons
+        li = [material_index]*len(p)
+        p.foreach_set('material_index', li)
         
-        if save_mode != 'OBJECT' and save_mode != 'EDIT':
-            # if our user is in sculpting mode or smthn idk
-            bpy.ops.object.mode_set(mode='EDIT')
-            
-        if save_mode == 'OBJECT':
-            # runs in n time so like not great for large meshes, might wanna change this
-            for p in bpy.context.active_object.data.polygons:
-                p.material_index = i
-                
-        elif save_mode == 'EDIT':
-            # this is ugly as i'll get out but it works so oh well
-            bpy.context.object.active_material_index = i
-            bpy.ops.mesh.select_all(action='SELECT')
-            bpy.ops.object.material_slot_assign()
-            bpy.ops.mesh.select_all(action='DESELECT')
         
-        bpy.ops.object.mode_set(mode=save_mode)
+        

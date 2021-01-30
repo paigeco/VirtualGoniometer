@@ -2,6 +2,7 @@
 
 from bpy.types import Operator
 from bpy.props import IntProperty
+from ..MaterialManagers import ManagerInstance as mi
 
 class DeletePatch(Operator):
     """Deletes this specific patch"""
@@ -14,10 +15,9 @@ class DeletePatch(Operator):
 
     def execute(self, context):
         print(self.patch_int)
-        
-        pairs = material_pair_manager.return_active_material_pairs()
+        pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
         pairs[self.patch_int].destroy()
-        material_pair_manager.resync()
+        mi.Material_Group_Manager.remove_item('Pairs', self.patch_int, context=context)
         
         # Log the current mode so we can return to it
         #save_mode = bpy.context.active_object.mode

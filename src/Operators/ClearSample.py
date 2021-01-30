@@ -1,6 +1,10 @@
-from bpy import context as C
+from bpy import ops
 from bpy.types import Operator
-from bpy import ops as O
+
+
+from ..MaterialManagers import ManagerInstance as mi
+
+
 
 # OPERATORS >> CLEARSELECTION ( FILE )
 class ClearSelection(Operator):
@@ -11,14 +15,17 @@ class ClearSelection(Operator):
 
     def execute(self, context):
         # Log the current mode so we can return to it
-        save_mode = C.active_object.mode
+        save_mode = context.active_object.mode
         
+        co = context.active_object
         # Chcange over to object mode so we can change materials
         #mode_set(mode = 'OBJECT')
         
         # Initialize scene, mats & obj for EOU
-        cpi = C.active_object.cs_individual_VG_
-        ms = C.active_object.data.materials
+        cpi = co.cs_individual_VG_
+        
+        cpi.material_pairs.clear()
+        cpi.material_regions.clear()
         
         # Reset status variables to default
         cpi.property_unset('cp_index')
@@ -26,19 +33,13 @@ class ClearSelection(Operator):
         cpi.property_unset('is_side_one_active')
         
         # Remove everything from the patches
-        pairs = material_pair_manager.return_active_material_pairs()
-        for pair in reversed(pairs):
-            pair.destroy()
-            material_pair_manager.resync()
+        mi.Material_Group_Manager.construct_new_object_pair_list(co)
+        co.data.materials.clear()
         
-        # Check if base material exists after this process
-        #base_material.attempt_recovery()
-
-        C.active_object.material_pairs.clear()
-        material_pair_manager.clear_active_material_pairs()
+        mi.Material_Group_Manager.reset_base_material(context=context)
         
         # Return to the user's mode
-        if C.active_object.mode != save_mode:
-            O.object.mode_set(mode = save_mode)
+        if context.active_object.mode != save_mode:
+            ops.object.mode_set(mode=save_mode)
         
         return {'FINISHED'}

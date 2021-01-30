@@ -7,14 +7,14 @@ def local_material_index(self):
         if slot.name == self.material.name_full:
             #self.material_index = i
             return i
-    return None
+    return 2147483647 #returns the largest number in an int
 
 def global_material_index(self):
     for i, slot in enumerate(bpy.data.materials):
         if slot.name == self.material.name_full:
             #self.material_index = i
             return i
-    return None
+    return 2147483647 #returns the largest number in an int
 
 class MaterialRegion(PropertyGroup):    
     """[ Material Region ]"""
@@ -31,4 +31,3 @@ class MaterialRegion(PropertyGroup):
     default_color: FloatVectorProperty(default=(1.0, 1.0, 1.0))
     
     context_object: PointerProperty(type=Object)
-
