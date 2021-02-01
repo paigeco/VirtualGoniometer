@@ -1,6 +1,6 @@
 from bpy_extras import view3d_utils # type: ignore
 
-def do_raycast(context, event, callback):
+def do_raycast(context, event, callback, bn=None):
     """Run this function on left mouse, execute the ray cast"""
     # get the context arguments
     scene = context.scene
@@ -53,7 +53,7 @@ def do_raycast(context, event, callback):
             _ = normal
             if hit is not None:
                 hit_world = matrix @ hit
-                callback(scene, context, hit_world, face_index)
+                callback(scene, context, hit_world, face_index, bn=bn)
                 length_squared = (hit_world - ray_origin).length_squared
                 if best_obj is None or length_squared < best_length_squared:
                     best_length_squared = length_squared

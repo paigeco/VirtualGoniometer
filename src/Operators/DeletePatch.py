@@ -14,12 +14,17 @@ class DeletePatch(Operator):
     patch_int: IntProperty(default=0)
 
     def execute(self, context):
-        print(self.patch_int)
         pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
         pairs[self.patch_int].destroy()
         mi.Material_Group_Manager.remove_item('Pairs', self.patch_int, context=context)
         mi.Material_Group_Manager.resync(context_object=context.active_object)
-        
+        pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
+        if len(pairs) == 0:
+            co = context.active_object
+            cpi = co.cs_individual_VG_
+            cpi.property_unset('cp_index')
+            cpi.property_unset('is_patch_editor_active')
+            cpi.property_unset('is_side_one_active')
         # Log the current mode so we can return to it
         #save_mode = bpy.context.active_object.mode
         

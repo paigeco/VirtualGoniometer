@@ -4,12 +4,24 @@ from bpy.props import BoolProperty, CollectionProperty
 from bpy.types import PropertyGroup, Object
 from .PairProperties import MaterialPair
 from .RegionProperties import MaterialRegion
+import bpy
 
 def get_bpairs_len(self):
     return len(self.material_pairs)
 
 def get_bregion_len(self):
     return len(self.material_regions)
+
+def get_num_breaks(self):
+    _ = self
+    pairs = bpy.context.active_object.cs_individual_VG_.material_pairs
+    breaks = [pair.break_index for pair in pairs]
+    
+    if len(breaks) == 0:
+        return 1
+    else:
+        return int(max(breaks)+1)
+    
 
 class VirtualGoniometerObject_VG_(PropertyGroup):
     """[ Object  ]"""
@@ -18,6 +30,8 @@ class VirtualGoniometerObject_VG_(PropertyGroup):
     pair_list_length: IntProperty(get=get_bpairs_len)
     
     region_list_length: IntProperty(get=get_bregion_len)
+    
+    breaks: IntProperty(get=get_num_breaks)
     
     # add the object pointer
     object: PointerProperty(type=Object)

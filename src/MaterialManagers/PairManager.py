@@ -38,11 +38,13 @@ class PairManager(object):
             self.bsp.center = list(c_polygon_pointer.center)
 
         #self.add_pair_to_blender_storage()
-
-        self.bsp.name = "Patch (" + str(self.bsp.index+1) + ")"
+        
         self.bsp.context_object = bpy.context.active_object
         
         self.create_new_material_pair()
+    
+    def set_name(self, break_index):
+        self.bsp.break_index = break_index
 
     def create_new_material_pair(self):
         # set the color objects from the pair list

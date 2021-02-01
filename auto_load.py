@@ -11,7 +11,7 @@ import importlib
 import bpy
 #import sys
 from .construct import load_m
-
+from .src.MaterialManagers.ManagerInstance import construct_mgm
 #CUSTOM CLASS IMPORT
 
 
@@ -34,10 +34,11 @@ def init():
 
 def register():
     """[ register ]"""
+    construct_mgm()
     for cls in ordered_classes:
         bpy.utils.register_class(cls)
-
     load_m()
+
     
     for module in modules:
         if module.__name__ == __name__:

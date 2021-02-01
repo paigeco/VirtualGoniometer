@@ -13,15 +13,16 @@ class PerformRaycastSelect(Operator):
     bl_label = "RayCast Select Operator"
     bl_options = {'REGISTER', 'UNDO'}
     save_mode = None
+    break_number = 0
     def modal(self, context, event):
         if event.type in {'MIDDLEMOUSE', 'WHEELUPMOUSE', 'WHEELDOWNMOUSE'}:
             # allow navigation
             return {'PASS_THROUGH'}
         elif event.type == 'MOUSEMOVE':
-            do_raycast(context, event, move_cursor)
+            do_raycast(context, event, move_cursor, bn=self.break_number)
             return {'RUNNING_MODAL'}
         elif event.type == 'LEFTMOUSE':
-            do_raycast(context, event, run_by_selection)
+            do_raycast(context, event, run_by_selection, bn=self.break_number)
             return {'RUNNING_MODAL'}
         elif event.type in {'RIGHTMOUSE', 'ESC'} or context.active_object.mode != 'OBJECT':
             bpy.context.space_data.overlay.show_cursor = False
@@ -30,7 +31,9 @@ class PerformRaycastSelect(Operator):
             
         return {'RUNNING_MODAL'}
 
-    def invoke(self, context, event):        
+    def invoke(self, context, event):
+        self.break_number = context.active_object.cs_individual_VG_.breaks
+        
         if context.space_data.type == 'VIEW_3D':
             self.save_mode = context.active_object.mode
             bpy.context.space_data.overlay.show_cursor = True

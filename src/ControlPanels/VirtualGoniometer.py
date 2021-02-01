@@ -87,7 +87,7 @@ class VirtualGoniometerControlPanel(Panel):
                         
                         sub = side_colors.row(align=True)
 
-                        sub.prop(pair.bsp, 'name', text="")
+                        sub.label(text=str(pair.bsp.name))
                         sub.label(text='( '+str(round(pair.bsp.theta, self.ANGLE_PRECISION))+'° )')
                         
                         edits = sub.row(align=True)

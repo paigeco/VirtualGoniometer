@@ -1,26 +1,48 @@
-import bpy
+from bpy.props import StringProperty, IntProperty, PointerProperty, FloatVectorProperty
+from bpy.props import FloatProperty
+from bpy.types import PropertyGroup, Object
 from .RegionProperties import MaterialRegion
 
 def return_index_in_struct(self):
     b = self.path_from_id()
     return int("".join(filter(str.isdigit, b)))
 
+def get_measurement_index(self):
+    count = 1
+    pairs = self.context_object.cs_individual_VG_.material_pairs
+    for pair in pairs:
+        
+        if pair.break_index == self.break_index:
+            
+            if pair == self:
+                break
+            count += 1
+    return count
 
-class MaterialPair(bpy.types.PropertyGroup):
-    # Set the pair name    
-    name: bpy.props.StringProperty(default='patch')
+def get_name(self):
+    return 'Break ({}) - M({})'.format(self.break_index, self.measurement_index)
+
+
+class MaterialPair(PropertyGroup):
+
+    flavor_text: StringProperty(default="")
     
-    index: bpy.props.IntProperty(get=return_index_in_struct)
+    break_index: IntProperty(default=0)
 
     # Save the angle
-    theta: bpy.props.FloatProperty(default=0.0)
+    theta: FloatProperty(default=0.0)
     
     # The centerpoint translation
-    center: bpy.props.FloatVectorProperty(default=(0.0, 0.0, 0.0))
+    center: FloatVectorProperty(default=(0.0, 0.0, 0.0))
+    
+    # Set the pair name
+    name: StringProperty(get=get_name)
+    index: IntProperty(get=return_index_in_struct)
+    measurement_index: IntProperty(get=get_measurement_index)
     
     # add the object pointer
-    context_object: bpy.props.PointerProperty(type=bpy.types.Object)
+    context_object: PointerProperty(type=Object)
     
     # patches
-    patch_A: bpy.props.PointerProperty(type=MaterialRegion)    
-    patch_B: bpy.props.PointerProperty(type=MaterialRegion)
+    patch_A: PointerProperty(type=MaterialRegion)    
+    patch_B: PointerProperty(type=MaterialRegion)

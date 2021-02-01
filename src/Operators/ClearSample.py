@@ -31,7 +31,8 @@ class ClearSelection(Operator):
         cpi.property_unset('cp_index')
         cpi.property_unset('is_patch_editor_active')
         cpi.property_unset('is_side_one_active')
-        
+        cpi.property_unset('breaks')
+
         # Remove everything from the patches
         mi.Material_Group_Manager.construct_new_object_pair_list(co)
         co.data.materials.clear()

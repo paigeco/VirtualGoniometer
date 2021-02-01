@@ -1,7 +1,10 @@
 """ A hotfix to save memory and cpu operations """
+from random import randint
+from numpy import array, reshape
 
 import bpy
-from numpy import array, reshape, stack
+
+
 
 # STORAGE >> POLYCACHE ( FILE )
 class FaceCache():
@@ -9,17 +12,20 @@ class FaceCache():
     nearest neighbors searches ]
     """
     def __init__(self):
+        self.random_check = 0
         self.check_poly = None
         self.all_centers_and_normals = None
        
     def ensure_cache(self):
         """ [ ensures that the cache is up to date]
         """
-        #TODO: Implement a random set version of this code instead, but this will do for now
+        #Completed: Implement a random set version of this code instead, but this will do for now
         try:
-            if len(bpy.context.active_object.data.polygons) > 0:
-                if self.check_poly != bpy.context.active_object.data.polygons[0]:
-                    self.check_poly = bpy.context.active_object.data.polygons[0]
+            n = len(bpy.context.active_object.data.polygons)
+            if n > 0:
+                if self.check_poly != bpy.context.active_object.data.polygons[self.random_check]:
+                    self.random_check = randint(0, n)
+                    self.check_poly = bpy.context.active_object.data.polygons[self.random_check]
                     self.reset_cache()
                 else:
                     pass
@@ -44,7 +50,6 @@ class FaceCache():
         
         normals = reshape(normals, (n, 3))
         self.all_centers_and_normals = array([centers.tolist(), normals.tolist()])
-        print(self.all_centers_and_normals.shape)
     
     def get_centers_and_normals(self):
         """[gets the centers_and_normals]

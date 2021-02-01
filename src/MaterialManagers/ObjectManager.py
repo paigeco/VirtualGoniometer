@@ -123,6 +123,7 @@ class MaterialGroupManager(object):
         ----------
         context_object (bpy.types.Object): [description]
         """
+        #bpy.context.active_object.cs_individual_VG_.object = context_object
         self.object_data_dictionary[context_object] = {'Regions':[], 'Pairs':[], 'BaseColor':None}
         #self.reset_base_material()
     

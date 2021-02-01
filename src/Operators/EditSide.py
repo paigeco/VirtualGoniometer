@@ -1,6 +1,6 @@
 """[ contains the edit side operator ]"""
 
-from bpy.props import StringProperty, IntVectorProperty
+from bpy.props import StringProperty, IntVectorProperty, BoolVectorProperty
 
 from bpy.types import Operator
 from bpy import ops as O
@@ -20,6 +20,8 @@ class EditSide(Operator):
                                description='[ Side Integer (1 or 2), Material Pair Integer (i)]',
                                default=(0, 0),
                                size=2)
+    select_type: BoolVectorProperty(default=(False, False, False), size=3)
+    
     def execute(self, context):
         # Log the current mode so we can return to it
         cpi = context.active_object.cs_individual_VG_
@@ -59,23 +61,28 @@ class EditSide(Operator):
             bm = bmesh.new() # pylint: disable=assignment-from-no-return
             bm = bmesh.from_edit_mesh(context.active_object.data) # pylint: disable=assignment-from-no-return
             
-            # Skip if none are selected
-            if len(bm.faces) <= 1:
-                return {'FINISHED'}
             
+            count = 0
             # Edit said bmesh
             for face in bm.faces:
                 if face.select:
                     face.material_index = mi
                     face.select = False
+                    count += 1
+                    
                 elif face.material_index == mi:
                     face.material_index = base_index
 
+            # Skip if none are selected
+            if count <= 10:
+                return {'FINISHED'}
 
             bmesh.update_edit_mesh(context.active_object.data)
             bm.free()
             
+            context.tool_settings.mesh_select_mode = self.select_type
             # Return to the user's mode
+
             if context.active_object.mode != self.save_mode:
                 O.object.mode_set(mode=self.save_mode)
             
@@ -85,6 +92,12 @@ class EditSide(Operator):
         else:
             # Save the mode before beginning the routine
             self.save_mode = str(context.active_object.mode)
+            
+            # Save the select type
+            self.select_type = context.tool_settings.mesh_select_mode
+            
+            # Set to face settings
+            context.tool_settings.mesh_select_mode = (False, False, True)
             
             # Switch to edit mode
             if self.save_mode != 'EDIT':
@@ -97,6 +110,8 @@ class EditSide(Operator):
             context.active_object.active_material_index = mi
             O.object.material_slot_select()
 
+            
+            
             # SET for Embossing
             cpi.active_patch_index = int(self.options[1])
             cpi.is_patch_editor_active = True
