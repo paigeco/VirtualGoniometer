@@ -22,7 +22,7 @@ def get_measurement_index(self):
 def get_name(self):
     try:
         return 'Break ({}) - M({})'.format(self.break_index, self.measurement_index)
-    except Exception:
+    except Exception: #pylint: disable=broad-except
         return 'p'
 
 class MaterialPair(PropertyGroup):

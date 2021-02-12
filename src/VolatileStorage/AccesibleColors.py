@@ -29,3 +29,25 @@ DIFFERENTIABLE_COLORS = [
         (210, 245, 60)
     ]
 ]
+
+COLOR_NAMES = {
+    'Blue':(255, 225, 25),  # Visible to 100%
+    'Yellow':(0, 130, 200),
+    'Orange':(245, 130, 56),  # Visible to 99.99%
+    'Lavender':(220, 190, 255),
+    'Maroon':(128, 0, 0),
+    'Navy':(0, 0, 128),
+    'Red':(230, 25, 75),  # Visible to 99%
+    'Green':(60, 180, 75),
+    'Cyan':(70, 240, 240),
+    'Magenta':(240, 50, 230),
+    'Pink':(250, 190, 212),
+    'Teal':(0, 128, 128),
+    'Brown':(170, 110, 40),
+    'Beige':(255, 250, 200),
+    'Mint':(170, 255, 195),
+    'Olive':(128, 128, 0),   # Visible to 95%
+    'Apricot':(255, 215, 180),
+    'Purple':(145, 30, 180),
+    'Lime':(210, 245, 60)
+}
