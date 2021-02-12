@@ -16,14 +16,17 @@ from . import auto_load as AutoLoader
 
 
 bl_info = {
-    "name" : "BTestMK1",
+    "name" : "VirtualGoniometer",
     "author" : "Paige",
-    "description" : "",
-    "blender" : (2, 90, 0),
-    "version" : (0, 0, 32),
-    "location" : "",
+    "description" : "test",
+    "blender" : (2, 80, 0),
+    "version" : (1, 47),
+    "location" : "3DView",
     "warning" : "",
-    "category" : "Generic"
+    "category" : "Object",
+    "support": "COMMUNITY",
+    "wiki_url": "",
+    "tracker_url": "",
 }
 
 
@@ -40,4 +43,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-
+    #pass

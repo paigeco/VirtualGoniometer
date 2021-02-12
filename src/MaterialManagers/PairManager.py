@@ -38,8 +38,9 @@ class PairManager(object):
             self.bsp.center = list(c_polygon_pointer.center)
 
         #self.add_pair_to_blender_storage()
-        
+        print('running c object 1')
         self.bsp.context_object = bpy.context.active_object
+        print('printiung c object 1')
         
         self.create_new_material_pair()
     
@@ -50,7 +51,9 @@ class PairManager(object):
         # set the color objects from the pair list
         o_color1, o_color2 = self.generate_color_objects()
         
+        print('running c object 2')
         self.bsp.context_object = self.context.active_object
+        print('finishing c object 2')
         
         self.bsp.patch_A.context_object = self.context.active_object
         self.bsp.patch_B.context_object = self.context.active_object
@@ -87,21 +90,19 @@ class PairManager(object):
     
     def get_current_face_data(self):
         # get the Faces
-        self.material_1.update_faces_with_material()
-        self.material_2.update_faces_with_material()
-
+        faces1 = self.material_1.update_faces_with_material()
+        faces2 = self.material_2.update_faces_with_material()
+        return faces1, faces2
+    
     def get_angle(self):
-        # refresh the face data
-        self.get_current_face_data()
-        
         # get the Normals and Centroids
-        self.material_1.get_face_mathematical_components()
-        self.material_2.get_face_mathematical_components()
+        center1, normal1 = self.material_1.get_face_mathematical_components()
+        center2, normal2 = self.material_2.get_face_mathematical_components()
         
         # get the angle
         self.bsp.theta, self.patch_normal_1, self.patch_normal_2 = get_angle(
-            self.material_1.centers, self.material_2.centers,
-            self.material_1.normals, self.material_2.normals)
+            center1, center2,
+            normal1, normal2)
     
     def apply_to_face_pair_by_indexes(self, F1, F2):
         self.material_1.apply_to_faces_by_face_index(F1)

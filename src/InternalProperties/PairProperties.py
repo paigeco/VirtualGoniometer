@@ -20,8 +20,10 @@ def get_measurement_index(self):
     return count
 
 def get_name(self):
-    return 'Break ({}) - M({})'.format(self.break_index, self.measurement_index)
-
+    try:
+        return 'Break ({}) - M({})'.format(self.break_index, self.measurement_index)
+    except Exception:
+        return 'p'
 
 class MaterialPair(PropertyGroup):
 

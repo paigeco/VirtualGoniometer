@@ -22,7 +22,7 @@ class VirtualGoniometerControlPanel(Panel):
             cpi = bpy.context.active_object.cs_individual_VG_
 
             base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
-            pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
+            #pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
             
             layout.label(text='Base Color Selector:')
             row = layout.row()
@@ -72,23 +72,23 @@ class VirtualGoniometerControlPanel(Panel):
             
             if bpy.context.active_object is not None:
                 
-                if len(pairs) == 0:
+                if len(cpi.material_pairs) == 0:
                     data_box.label(text="Selected Angles Will Be Shown Here", icon="ADD")
                     
                 else:
                     
-                    for i, pair in enumerate(pairs):
+                    for i, pair in enumerate(cpi.material_pairs):
                         #print(patch)
                         side_colors = data_box.row(align=True)
                         side_colors.scale_x = 0.22
                         
-                        side_colors.prop(pair.bsp.patch_A.material, "diffuse_color", text="")
-                        side_colors.prop(pair.bsp.patch_B.material, "diffuse_color", text="")
+                        side_colors.prop(pair.patch_A.material, "diffuse_color", text="")
+                        side_colors.prop(pair.patch_B.material, "diffuse_color", text="")
                         
                         sub = side_colors.row(align=True)
 
-                        sub.label(text=str(pair.bsp.name))
-                        sub.label(text='( '+str(round(pair.bsp.theta, self.ANGLE_PRECISION))+'° )')
+                        sub.label(text=str(pair.name))
+                        sub.label(text='( '+str(round(pair.theta, self.ANGLE_PRECISION))+'° )')
                         
                         edits = sub.row(align=True)
                         edits.scale_x = 0.45

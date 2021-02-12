@@ -36,7 +36,9 @@ class MaterialGroupManager(object):
     def create_base_color(self, context) -> RegionManager:
         p = context.active_object.cs_individual_VG_.base_region
         p.name = self.base_default_name
+        
         p.context_object = context.active_object
+        
         bm = RegionManager(p)
         bm.apply_all()
         return bm

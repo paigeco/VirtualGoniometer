@@ -67,22 +67,24 @@ class RegionManager():
 
     def update_faces_with_material(self):
         self.get_material_index()
-        self.faces = []
+        faces = []
         for face in bpy.context.active_object.data.polygons:
             if face.material_index == self.material_index:
-                self.faces.append(face)
+                faces.append(face)
+        return faces
     
     def get_face_mathematical_components(self):
-        self.update_faces_with_material()
+        faces = self.update_faces_with_material()
         normals = []
         centers = []
 
-        for f in self.faces:
+        for f in faces:
             normals.append(f.normal)
             centers.append(f.center)
         
-        self.normals = np.array(normals)
-        self.centers = np.array(centers)
+        normals = np.array(normals)
+        centers = np.array(centers)
+        return normals, centers
     
     def set_color_from_MU_object(self):
         self.bsp.material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1.0)
