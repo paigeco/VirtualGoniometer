@@ -38,9 +38,7 @@ class PairManager(object):
             self.bsp.center = list(c_polygon_pointer.center)
 
         #self.add_pair_to_blender_storage()
-        print('running c object 1')
         self.bsp.context_object = bpy.context.active_object
-        print('printiung c object 1')
         
         self.create_new_material_pair()
     
@@ -51,9 +49,7 @@ class PairManager(object):
         # set the color objects from the pair list
         o_color1, o_color2 = self.generate_color_objects()
         
-        print('running c object 2')
         self.bsp.context_object = self.context.active_object
-        print('finishing c object 2')
         
         self.bsp.patch_A.context_object = self.context.active_object
         self.bsp.patch_B.context_object = self.context.active_object
