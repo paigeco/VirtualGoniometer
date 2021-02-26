@@ -17,7 +17,7 @@ from . import auto_load as AutoLoader
 
 bl_info = {
     "name" : "VirtualGoniometer",
-    "author" : "Paige",
+    "author" : "AMAAZE GROUP",
     "description" : "test",
     "blender" : (2, 80, 0),
     "version" : (1, 47),

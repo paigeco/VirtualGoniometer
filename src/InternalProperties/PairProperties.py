@@ -34,6 +34,12 @@ class MaterialPair(PropertyGroup):
     # Save the angle
     theta: FloatProperty(default=0.0)
     
+    # Number of points
+    number_of_points: IntProperty()
+    
+    # Radius
+    radius: FloatProperty()
+    
     # The centerpoint translation
     center: FloatVectorProperty(default=(0.0, 0.0, 0.0))
     

@@ -17,7 +17,7 @@ class VirtualGoniometerControlPanel(Panel):
         layout = self.layout
         #scene = context.scene
         
-        if bpy.context.active_object is not None:
+        if bpy.context.active_object is not None and bpy.context.active_object.type == 'MESH':
             
             cpi = bpy.context.active_object.cs_individual_VG_
 

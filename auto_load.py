@@ -11,6 +11,7 @@ import importlib
 import bpy
 #import sys
 from .construct import load_m
+from .src.SystemInterface.EnsureModules import check_install
 from .src.MaterialManagers.ManagerInstance import construct_mgm
 #CUSTOM CLASS IMPORT
 
@@ -26,6 +27,9 @@ ordered_classes = []
 
 def init():
     """ [ get lists of modules and submodules ] """
+    
+    check_install()
+    
     global modules  # pylint: disable=global-statement
     global ordered_classes  # pylint: disable=global-statement
 

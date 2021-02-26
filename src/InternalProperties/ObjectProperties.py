@@ -2,9 +2,11 @@
 from bpy.props import IntProperty, BoolVectorProperty, PointerProperty
 from bpy.props import BoolProperty, CollectionProperty
 from bpy.types import PropertyGroup, Object
+import bpy
+
 from .PairProperties import MaterialPair
 from .RegionProperties import MaterialRegion
-import bpy
+
 
 def get_bpairs_len(self):
     return len(self.material_pairs)
