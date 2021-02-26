@@ -1,6 +1,6 @@
 """[ code for generating color blind friendly color pairs ]"""
 import bpy
-from .AccesibleColors import DIFFERENTIABLE_COLORS
+from .AccesibleColors import DIFFERENTIABLE_COLORS, COLOR_NAMES
 
 # IT HAD TO BE DONE THIS WAY FOR ACCESIBILITY REASONS
 # DON'T WORRY I PROBABLY FEEL WORSE ABOUT HOW UN-PYTHONIC
@@ -77,3 +77,31 @@ class ColorPairs():
         # if sum([n for n in len(self.active_colors)])
         # TODO ADD LOOPING FOR ERROR ISSUES
         return self.get_pairs()
+
+    def get_tuple_from_color_name(self, name) -> 'tuple':
+        
+        # The Blender version of the V.G. doesn't support black
+        if name == 'Black':
+            # This is a bodge so colors come out the same
+            return (255, 255, 255) 
+        elif name in COLOR_NAMES:
+            # Return the tuple
+            return COLOR_NAMES[name]
+        else: 
+            return (255, 255, 255) #Is not in list return 'Black'
+    
+    def get_color_name_from_tuple(self, tupl) -> 'str':
+
+        # Dictionary flip using dictionary compression, not efficient, but it doesn't matter
+        tuple_names = {v:k for (k, v) in COLOR_NAMES.items()}
+        
+        print(tupl)
+        print(tuple_names)
+        # Find the name in tuple list.
+        # TODO: At some point add functionality to find closest match to currently displayed
+        #     color as colors are user editable
+        if tupl in tuple_names:
+            return tuple_names[tupl]
+        else:
+            return 'N/A'
+        
