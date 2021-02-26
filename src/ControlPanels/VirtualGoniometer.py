@@ -54,7 +54,7 @@ class VirtualGoniometerControlPanel(Panel):
             # Different sizes in a row
             layout.label(text="Export Data to File:")
             row = layout.row(align=True)
-            #layout.operator("export.some_data", icon_value=cicons["csv_out"].icon_id)
+            layout.operator("export.all_pairs")#, icon_value=cicons["csv_out"].icon_id)
             
             # Clear Data
             layout.label(text="Edit Selection:")

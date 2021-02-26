@@ -14,7 +14,7 @@ def seperate_angles(selected_polygon_pointers=None, center=(0, 0, 0), break_inde
     
     CNs, SVs, LPIs, Ds = get_data_from_selected_object(selected_polygon_pointers)
     
-    nCNs = CNs.shape[1] # Number of points in mesh
+    #nCNs = CNs.shape[1] # Number of points in mesh
     nLPIs = LPIs.shape[1] # Number of points in area
     
     # k is which of the selected faces we are on

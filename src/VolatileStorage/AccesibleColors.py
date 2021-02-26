@@ -49,5 +49,5 @@ COLOR_NAMES = {
     'Olive':(128, 128, 0),   # Visible to 95%
     'Apricot':(255, 215, 180),
     'Purple':(145, 30, 180),
-    'Lime':(210, 245, 60)
+    'Lime':(210, 245, 60),
 }
