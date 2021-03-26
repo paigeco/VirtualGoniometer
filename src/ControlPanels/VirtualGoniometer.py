@@ -21,7 +21,6 @@ class VirtualGoniometerControlPanel(Panel):
             cpi = context.active_object.cs_individual_VG_
 
             base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
-            #pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
             
             layout.label(text='Base Color Selector:')
             row = layout.row()
@@ -52,8 +51,9 @@ class VirtualGoniometerControlPanel(Panel):
 
             # Different sizes in a row
             layout.label(text="File Operations:")
-            row = layout.row(align=True)
-            layout.operator("export.all_pairs")#, icon_value=cicons["csv_out"].icon_id)
+            io_column = layout.column(align=True)
+            io_column.operator("export.all_pairs")#, icon_value=cicons["csv_out"].icon_id)
+            io_column.operator("import.all_pairs")
             
             # Clear Data
             layout.label(text="Edit Selection:")
@@ -74,36 +74,42 @@ class VirtualGoniometerControlPanel(Panel):
                     data_box.label(text="Selected Angles Will Be Shown Here", icon="ADD")
                     
                 else:
-                    
                     for i, pair in enumerate(cpi.material_pairs):
-                        #print(patch)
+                        
+                        # Show pointer areas to the two object materials.
                         side_colors = data_box.row(align=True)
                         side_colors.scale_x = 0.22
                         
                         side_colors.prop(pair.patch_A.material, "diffuse_color", text="")
                         side_colors.prop(pair.patch_B.material, "diffuse_color", text="")
                         
+                        # Setup the name fields
                         sub = side_colors.row(align=True)
+                        #    Show the name
                         sub.label(text=str(pair.name))
-                        sub.label(text='( '+str(round(pair.theta, self.ANGLE_PRECISION))+'° )')
+                        #    Show the angle theta
+                        sub.label(text='( '+str(round(pair.theta, self.ANGLE_PRECISION))+'° )') 
                         
+                        # Setup the editing field
                         edits = sub.row(align=True)
                         edits.scale_x = 0.45
                         
-                        if i == cpi.active_patch_index:
-                            d = cpi.depressed
-                        else:
-                            d = (False, False)
+                        #    Set whether the button should be depressed or not
+                        dep = cpi.depressed if i == cpi.active_patch_index else (False, False)
                         
-                        edits.operator("view3d.editside", text='1', depress=d[0]).options = (1, i)
-                        edits.operator("view3d.editside", text='2', depress=d[1]).options = (2, i)
+                        #    Set the depressions and show the edit side buttons
+                        edits.operator("view3d.editside", text='1', depress=dep[0]).options = (1, i)
+                        edits.operator("view3d.editside", text='2', depress=dep[1]).options = (2, i)
                         
+                        # Setup and show the delete patch button
                         dbutto = sub.row(align=True)
                         dbutto.scale_x = 0.4
                         dbutto.operator("object.deletepatch", text=" ", icon="CANCEL").patch_int = i
                         #delp.label(text=" ")
                      
             else:
+                # Prompt the user to first add an object
                 data_box.label(text='Please add an object')
         else:
+            # Prompt the user to first add an object
             layout.label(text='Please select an object')

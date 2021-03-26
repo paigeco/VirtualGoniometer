@@ -3,7 +3,19 @@ from numpy import array
 from .Neighbors3D import NearestNeighbors3D
 from ..VolatileStorage import CacheInstance as ci
 
-def get_data_from_selected_object(selected_polygon_pointers):
+def get_data_from_selected_object(selected_polygon_pointers, radius):
+    """ This is a big glitchy mess and needs a bunch of bug squashing
+
+    Parameters
+    ----------
+    selected_polygon_pointers :[the pointers to the central polygons]
+    radius : [int] [number of nearest neighbors]
+
+    Returns
+    -------
+    [tuple] [description]
+    """
+    
     # TODOO REMOVE THIS! THIS IS A GLITCHY HOTFIX THAT FORCES
     # THE USER INTO FACE EDIT MODE
     '''
@@ -43,10 +55,9 @@ def get_data_from_selected_object(selected_polygon_pointers):
         all_centers_and_normals = ci.Cache.get_centers_and_normals()
         all_selected_centers = array(list(map(lambda p: p.center, selected_polygon_pointers)))
     
-    num_neigbors = int(bpy.context.scene.cs_overall_VG_.number_of_nearest_neighbors)
-    distances, local_patch_indexes = NearestNeighbors3D(all_centers_and_normals[0],
-                                             all_selected_centers,
-                                             num_neigbors
-                                             )
+
+        distances, local_patch_indexes = NearestNeighbors3D(all_centers_and_normals[0],
+                                                            all_selected_centers,
+                                                            radius)
     
     return all_centers_and_normals, all_selected_centers, local_patch_indexes, distances

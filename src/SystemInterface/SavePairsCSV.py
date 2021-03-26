@@ -2,7 +2,7 @@ from csv import writer, QUOTE_MINIMAL
 import datetime
 
 from bpy_extras.io_utils import ExportHelper
-from bpy.props import StringProperty, BoolProperty, EnumProperty
+from bpy.props import StringProperty
 from bpy.types import Operator
 
 
@@ -39,7 +39,7 @@ def write_some_data(context, filepath):
         for pair in pairs:
             data_writer.writerow([
                 str(pair.context_object.name), # Mesh Name
-                datetime.datetime.fromtimestamp(pair.created_since_epoch).strftime('%c')[:-5],
+                datetime.datetime.fromtimestamp(pair.created_since_epoch).strftime('%c'),
                 str(pair.measurement_index),
                 str(pair.break_index),
                 "{}/{}".format(pair.patch_A.color_name, pair.patch_B.color_name),
@@ -59,7 +59,7 @@ def write_some_data(context, filepath):
 class ExportSomeData(Operator, ExportHelper):
     """Exports virtual goniometer data as a CSV"""
     bl_idname = "export.all_pairs"  # important since its how bpy.ops.import_test.some_data
-    bl_label = "Export to CSV"
+    bl_label = "Export Measurements to CSV"
 
     # ExportHelper mixin class uses this
     filename_ext = ".csv"
