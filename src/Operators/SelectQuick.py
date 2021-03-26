@@ -5,9 +5,9 @@ from .ContextOveride import overide_to_3d_view
 
 # OPERATORS >> PERFORMOPTIMALSELECT( FILE )
 class PerformOptimalSelect(Operator):
-    """Perform Side Differentiation"""
+    """Perform Angle Measurement"""
     bl_idname = "view3d.run_optimal_select"
-    bl_label = "Side Differentiation"
+    bl_label = "Take a Measurement"
     bl_options = {'REGISTER', 'UNDO'}
     def execute(self, context):
         save_mode = context.active_object.mode

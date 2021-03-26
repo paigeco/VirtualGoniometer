@@ -17,7 +17,7 @@ from . import auto_load as AutoLoader
 
 bl_info = {
     "name" : "VirtualGoniometer",
-    "author" : "AMAAZE GROUP",
+    "author" : "A.M.A.A.Z.E.",
     "description" : "A plugin for measuring the face widths etc.",
     "blender" : (2, 92, 0),
     "version" : (1, 0, 0),

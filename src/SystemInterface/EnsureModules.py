@@ -1,5 +1,5 @@
 """[ ensure that the necessary packages are installed ]"""
-
+import bpy
 from os import access, path, W_OK, X_OK
 import ctypes
 from sys import exec_prefix, platform, executable
@@ -28,7 +28,7 @@ def install_necessary_packages(elevation_needed=False):
     
     if platform.startswith("win"):
         print(exec_prefix)
-        windows_install = """echo 'Some packages will now be installed! It may take a few minutes...' && timeout 5 && "{}" -m pip install --prefix "{}" --force-reinstall --isolated --no-input --no-cache-dir -- scipy scikit-learn && exit""".format(executable, exec_prefix)
+        windows_install = """echo 'Some packages will now be installed! It may take a few minutes...' && timeout 5 && "{}" -m pip install --prefix "{}" --force-reinstall --isolated --no-input --no-cache-dir -- scipy scikit-learn && {} && exit""".format(executable, exec_prefix, bpy.app.binary_path)
         
         if elevation_needed:
             ctypes.windll.shell32.ShellExecuteW(
