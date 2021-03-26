@@ -6,6 +6,7 @@ from bpy.props import StringProperty
 from bpy.types import Operator
 
 from ..CustomMath.SeperateAngles import create_from_coordinates
+from ..VolatileStorage import CacheInstance as ci
 
 # Read from a csv
 ############################################
@@ -18,12 +19,23 @@ def read_some_data(context, filepath):
         csv_reader = reader(data_file, delimiter=',', quotechar='"', quoting=QUOTE_MINIMAL)
         
         data = [row for i, row in enumerate(csv_reader) if i]
-        print(data)
         
         for row in data:
-            #print((row[9:12]), row[7], row[3])
-            create_from_coordinates(tuple([float(r) for r in row[9:12]]), int(row[7]), int(row[3]))
-        #center_faces = 
+            center = tuple([float(r) for r in row[9:12]])
+            p = create_from_coordinates(center, int(row[7]), int(row[3]))[0]
+            p.created_since_epoch = datetime.datetime.strptime(row[1], '%c').now().timestamp()
+            
+            color = row[4].split("/")
+            c1 = tuple([c/255 for c in ci.TranslateColor.get_tuple_from_color_name(color[0])]+[1])
+            c2 = tuple([c/255 for c in ci.TranslateColor.get_tuple_from_color_name(color[1])]+[1])
+            
+            p.bsp.patch_A.default_color = c1[:-1]
+            p.bsp.patch_B.default_color = c2[:-1]
+            p.bsp.patch_A.material.diffuse_color = c1
+            p.bsp.patch_B.material.diffuse_color = c2
+            
+            p.bsp.flavor_text = row[5]
+            
         
         #seperate_angles(selected_polygon_pointers=[context.active_object.data.polygons[1]],
         #    break_index=1)

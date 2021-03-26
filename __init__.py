@@ -18,9 +18,9 @@ from . import auto_load as AutoLoader
 bl_info = {
     "name" : "VirtualGoniometer",
     "author" : "AMAAZE GROUP",
-    "description" : "test",
-    "blender" : (2, 80, 0),
-    "version" : (1, 47),
+    "description" : "A plugin for measuring the face widths etc.",
+    "blender" : (2, 92, 0),
+    "version" : (1, 0, 0),
     "location" : "3DView",
     "warning" : "",
     "category" : "Object",
@@ -43,4 +43,3 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-    #pass

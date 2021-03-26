@@ -14,6 +14,7 @@ class DeletePatch(Operator):
     patch_int: IntProperty(default=0)
 
     def execute(self, context):
+        mi.Material_Group_Manager.resync(context_object=context.active_object)
         pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
         pairs[self.patch_int].destroy()
         mi.Material_Group_Manager.remove_item('Pairs', self.patch_int, context=context)
