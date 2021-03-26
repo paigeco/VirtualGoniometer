@@ -5,9 +5,6 @@ from bpy_extras.io_utils import ExportHelper
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 from bpy.types import Operator
 
-from ..VolatileStorage.ColorManager import ColorPairs
-from ..MaterialManagers import ManagerInstance
-
 
 
 COLUMNS = [
@@ -29,32 +26,30 @@ COLUMNS = [
 
 # Write to a CSV
 ############################################
-def write_some_data(context, filepath, use_some_setting):
-    cp = ColorPairs()
-    
+def write_some_data(context, filepath):
+
     print("running write_some_data...")
     
-    pairs = ManagerInstance.Material_Group_Manager.return_active_object_entries('Pairs')
+    pairs = context.active_object.cs_individual_VG_.material_pairs
     
     with open(filepath, 'w', newline='') as data_file:
+        
         data_writer = writer(data_file, delimiter=',', quotechar='"', quoting=QUOTE_MINIMAL)
         data_writer.writerow(COLUMNS)
         for pair in pairs:
             data_writer.writerow([
-                str(pair.bsp.context_object.name), # Mesh Name
-                datetime.datetime.now().strftime('%c'), #TODOO fix this bodge
-                str(pair.bsp.measurement_index),
-                str(pair.bsp.break_index),
-                "{}/{}".format(
-                    cp.get_color_name_from_tuple(tuple(pair.bsp.patch_A.default_color)),
-                    cp.get_color_name_from_tuple(tuple(pair.bsp.patch_B.default_color))),
-                str(pair.bsp.flavor_text), # User Data
-                str(pair.bsp.theta), # Angle
-                str(pair.bsp.number_of_points), # Number of Verticies
-                str(pair.bsp.radius), # Radius
-                str(pair.bsp.center[0]), # x
-                str(pair.bsp.center[1]), # y
-                str(pair.bsp.center[2]), # z
+                str(pair.context_object.name), # Mesh Name
+                datetime.datetime.fromtimestamp(pair.created_since_epoch).strftime('%c')[:-5],
+                str(pair.measurement_index),
+                str(pair.break_index),
+                "{}/{}".format(pair.patch_A.color_name, pair.patch_B.color_name),
+                str(pair.flavor_text), # User Data
+                str(pair.theta), # Angle
+                str(pair.number_of_points), # Number of Verticies
+                str(pair.radius), # Radius
+                str(pair.center[0]), # x
+                str(pair.center[1]), # y
+                str(pair.center[2]), # z
                 str("fill"),
                 str(2)
             ])
@@ -74,24 +69,6 @@ class ExportSomeData(Operator, ExportHelper):
         options={'HIDDEN'},
         maxlen=255,  # Max internal buffer length, longer would be clamped.
     )
-    
-    # List of operator properties, the attributes will be assigned
-    # to the class instance from the operator settings before calling.
-    use_setting: BoolProperty(
-        name="Example Boolean",
-        description="Example Tooltip",
-        default=True,
-    )
-
-    type: EnumProperty(
-        name="Example Enum",
-        description="Choose between two items",
-        items=(
-            ('OPT_A', "First Option", "Description one"),
-            ('OPT_B', "Second Option", "Description two"),
-        ),
-        default='OPT_A',
-    )
 
     def execute(self, context):
-        return write_some_data(context, self.filepath, self.use_setting) # pylint: disable=no-member
+        return write_some_data(context, self.filepath) # pylint: disable=no-member

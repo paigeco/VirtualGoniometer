@@ -94,14 +94,12 @@ class ColorPairs():
 
         # Dictionary flip using dictionary compression, not efficient, but it doesn't matter
         tuple_names = {v:k for (k, v) in COLOR_NAMES.items()}
-        
-        print(tupl)
-        print(tuple_names)
+
         # Find the name in tuple list.
         # TODO: At some point add functionality to find closest match to currently displayed
         #     color as colors are user editable
-        if tupl in tuple_names:
-            return tuple_names[tupl]
+        check_tup = tuple([int(c*255.0) for c in tupl])
+        if check_tup in tuple_names:
+            return tuple_names[tuple([int(c*255.0) for c in tupl])]
         else:
             return 'N/A'
-        

@@ -157,10 +157,6 @@ class MaterialGroupManager(object):
             self.object_data_dictionary[context_object][manager_type].pop(index)
             return True
     
-    
-    
-    
-    
     def attempt_restore_object_pair_list(self, context_object):
         try:
             b_length_stored = len(context_object.material_pairs)
@@ -229,5 +225,4 @@ class MaterialGroupManager(object):
         b_pairs = co.cs_individual_VG_.material_pairs.values()
         
         for i, pair in enumerate(self.return_object_entries(co, 'Pairs')):
-            print(pair.bsp.name)
             pair.bsp = b_pairs[i]

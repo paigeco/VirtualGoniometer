@@ -1,32 +1,32 @@
 from bpy.props import StringProperty, IntProperty, PointerProperty, FloatVectorProperty
 from bpy.props import FloatProperty
+
 from bpy.types import PropertyGroup, Object
 from .RegionProperties import MaterialRegion
 
 def return_index_in_struct(self):
-    b = self.path_from_id()
-    return int("".join(filter(str.isdigit, b)))
+    try:
+        b = self.path_from_id()
+        return int("".join(filter(str.isdigit, b)))
+    except ValueError:
+        print("error")
+        return 2147483647
+    
 
 def get_measurement_index(self):
     count = 1
     pairs = self.context_object.cs_individual_VG_.material_pairs
     for pair in pairs:
-        
         if pair.break_index == self.break_index:
-            
-            if pair == self:
+            if pair.patch_A == self.patch_A and pair.patch_B == self.patch_B:
                 break
             count += 1
     return count
 
 def get_name(self):
-    try:
-        return 'Break ({}) - M({})'.format(self.break_index, self.measurement_index)
-    except Exception: #pylint: disable=broad-except
-        return 'p'
+    return 'Break ({}) - M({})'.format(self.break_index, self.measurement_index)
 
 class MaterialPair(PropertyGroup):
-
     flavor_text: StringProperty(default="")
     
     break_index: IntProperty(default=0)
@@ -37,6 +37,7 @@ class MaterialPair(PropertyGroup):
     # Number of points
     number_of_points: IntProperty()
     
+    created_since_epoch: IntProperty()
     # Radius
     radius: FloatProperty()
     

@@ -1,11 +1,12 @@
 """[ Pair Manager ]"""
+import datetime
+
 import bpy
 import mathutils
 from ..CustomMath.CalculateAngle import get_angle
 from ..CustomMath.RP1DClustering import ClusteringMeanRP1D
 from ..VolatileStorage.ColorManager import ColorPairs
 from .RegionManager import RegionManager
-
 
 class PairManager(object):
     def __init__(self, backup_pointer):
@@ -39,6 +40,7 @@ class PairManager(object):
 
         #self.add_pair_to_blender_storage()
         self.bsp.context_object = bpy.context.active_object
+        self.bsp.created_since_epoch = datetime.datetime.now().timestamp()
         
         self.create_new_material_pair()
     

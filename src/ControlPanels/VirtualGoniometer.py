@@ -1,25 +1,24 @@
 """[ Main Properties Panel ]
 """
-
-import bpy
 from bpy.types import Panel
 from ..MaterialManagers import ManagerInstance as mi
 
 class VirtualGoniometerControlPanel(Panel):
-    """Creates a Panel in the scene context of the properties editor"""
+    """Creates the main Virtual Goniometer Panel in the scene context of the properties editor"""
     bl_label = "Virtual Goniometer"
     bl_idname = "SCENE_PT_virtualgoniometer"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
+    
+    
     ANGLE_PRECISION = 1
     def draw(self, context):
         layout = self.layout
-        #scene = context.scene
         
-        if bpy.context.active_object is not None and bpy.context.active_object.type == 'MESH':
+        if context.active_object is not None and context.active_object.type == 'MESH':
             
-            cpi = bpy.context.active_object.cs_individual_VG_
+            cpi = context.active_object.cs_individual_VG_
 
             base = mi.Material_Group_Manager.return_active_object_entries('BaseColor')
             #pairs = mi.Material_Group_Manager.return_active_object_entries('Pairs')
@@ -52,14 +51,13 @@ class VirtualGoniometerControlPanel(Panel):
             
 
             # Different sizes in a row
-            layout.label(text="Export Data to File:")
+            layout.label(text="File Operations:")
             row = layout.row(align=True)
             layout.operator("export.all_pairs")#, icon_value=cicons["csv_out"].icon_id)
             
             # Clear Data
             layout.label(text="Edit Selection:")
             col = layout.column(align=True)
-            #col.operator("object.show_selection_circle")
             #col.operator("object.simplify_mesh")
             col.operator("object.center_sample")
             #, icon_value=co_arrays.custom_icons["center"].icon_id)
@@ -70,7 +68,7 @@ class VirtualGoniometerControlPanel(Panel):
             data_box = layout.box()
             data_box.label(text='Angle Data:')
             
-            if bpy.context.active_object is not None:
+            if context.active_object is not None:
                 
                 if len(cpi.material_pairs) == 0:
                     data_box.label(text="Selected Angles Will Be Shown Here", icon="ADD")
@@ -86,7 +84,6 @@ class VirtualGoniometerControlPanel(Panel):
                         side_colors.prop(pair.patch_B.material, "diffuse_color", text="")
                         
                         sub = side_colors.row(align=True)
-
                         sub.label(text=str(pair.name))
                         sub.label(text='( '+str(round(pair.theta, self.ANGLE_PRECISION))+'° )')
                         
@@ -101,14 +98,12 @@ class VirtualGoniometerControlPanel(Panel):
                         edits.operator("view3d.editside", text='1', depress=d[0]).options = (1, i)
                         edits.operator("view3d.editside", text='2', depress=d[1]).options = (2, i)
                         
-                        delp = sub.row(align=True)
-                        delp.scale_x = 0.4
-                        delp.operator("object.deletepatch", text=" ", icon="CANCEL").patch_int = i
+                        dbutto = sub.row(align=True)
+                        dbutto.scale_x = 0.4
+                        dbutto.operator("object.deletepatch", text=" ", icon="CANCEL").patch_int = i
                         #delp.label(text=" ")
                      
             else:
                 data_box.label(text='Please add an object')
-            
-            #row.operator("render.render")
         else:
             layout.label(text='Please select an object')

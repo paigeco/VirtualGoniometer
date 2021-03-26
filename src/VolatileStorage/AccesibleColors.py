@@ -31,8 +31,8 @@ DIFFERENTIABLE_COLORS = [
 ]
 
 COLOR_NAMES = {
-    'Blue':(255, 225, 25),  # Visible to 100%
-    'Yellow':(0, 130, 200),
+    'Blue':(0, 130, 200),  # Visible to 100%
+    'Yellow':(255, 225, 25),
     'Orange':(245, 130, 56),  # Visible to 99.99%
     'Lavender':(220, 190, 255),
     'Maroon':(128, 0, 0),
