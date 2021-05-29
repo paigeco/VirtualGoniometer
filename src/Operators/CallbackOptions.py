@@ -1,5 +1,5 @@
 from ..MaterialManagers import ManagerInstance as mi
-from ..CustomMath.SeperateAngles import seperate_angles
+from ..AngleMeasurement.SeperateAngles import seperate_angles
 
 def move_cursor(scene, context, click_location, fi, bn=None): # pylint: disable=unused-argument
     #print(context, click_location, bn)

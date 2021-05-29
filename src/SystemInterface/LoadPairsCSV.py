@@ -5,7 +5,7 @@ from bpy_extras.io_utils import ImportHelper
 from bpy.props import StringProperty
 from bpy.types import Operator
 
-from ..CustomMath.SeperateAngles import create_from_coordinates
+from ..AngleMeasurement.SeperateAngles import create_from_coordinates
 from ..VolatileStorage import CacheInstance as ci
 
 # Read from a csv

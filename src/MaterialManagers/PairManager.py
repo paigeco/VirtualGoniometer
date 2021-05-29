@@ -3,8 +3,8 @@ import datetime
 
 import bpy
 import mathutils
-from ..CustomMath.CalculateAngle import get_angle
-from ..CustomMath.RP1DClustering import ClusteringMeanRP1D
+from ..AngleMeasurement.CalculateAngle import get_angle
+from ..AngleMeasurement.RP1DClustering import ClusteringMeanRP1D
 from ..VolatileStorage.ColorManager import ColorPairs
 from .RegionManager import RegionManager
 

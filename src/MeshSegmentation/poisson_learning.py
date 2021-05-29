@@ -2,7 +2,7 @@
 
 import numpy as np
 import scipy.sparse as sp
-from src.MeshSegmentation.conjgrad import conjgrad
+from .conjgrad import conjgrad
 
 def poisson_learning(W, g, I):
     k = len(np.unique(g))
@@ -27,7 +27,7 @@ def poisson_learning(W, g, I):
     F = Dinv2 @ F
     
     #Conjugate Gradient Solver
-    u, i = conjgrad(Lnorm,  F,  np.zeros((n, k)), 1e5,  np.sqrt(n)*1e-10)
+    u, i = conjgrad(Lnorm, F, np.zeros((n, k)), 1e5, np.sqrt(n)*1e-10)
     
     #Undo preconditioning
     u = Dinv2 @ u

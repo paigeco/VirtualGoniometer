@@ -15,8 +15,10 @@ def graph_setup(x, y, z, faces, n, r, p):
     
     tri = Pts[faces]
     triVectors = np.cross(tri[::, 1] - tri[::, 0], tri[::, 2] - tri[::, 0])
-    triVectorsLens = np.sqrt(triVectors[:, 0]**2 + triVectors[:, 1]**2 + triVectors[:, 2]**2)
-   
+    #triVectorsLens = np.sqrt(triVectors[:, 0]**2 + triVectors[:, 1]**2 + triVectors[:, 2]**2)
+    #triVectorsLens = np.linalg.norm(triVectors)
+    triVectorsLens = np.sqrt(triVectors[:, 0]**2+triVectors[:, 1]**2+triVectors[:, 2]**2)
+    
     triVectors[:, 0] /= triVectorsLens
     triVectors[:, 1] /= triVectorsLens
     triVectors[:, 2] /= triVectorsLens
@@ -37,9 +39,9 @@ def graph_setup(x, y, z, faces, n, r, p):
     N = len(Pts)
     
     #Random subsample
-    ss_idx = np.matrix(np.random.choice(Pts.shape[0],n,False))
-    y = np.squeeze(Pts[ss_idx,:])
-    w = np.squeeze(v[ss_idx,:])
+    ss_idx = np.matrix(np.random.choice(Pts.shape[0], n, False))
+    y = np.squeeze(Pts[ss_idx, :])
+    w = np.squeeze(v[ss_idx, :])
 
     xTree = spatial.cKDTree(Pts)
     nn_idx = xTree.query_ball_point(y, r)
@@ -64,11 +66,11 @@ def graph_setup(x, y, z, faces, n, r, p):
     J = RSM @ J
     
     #Compute weight matrix W
-    W = sparse.lil_matrix((n,n))
+    W = sparse.lil_matrix((n, n))
     for i in range(n):
         nj = bn[nodes_idx[i]]
         normal_diff = bn[i] - nj
-        weights = np.exp(-32 * ((np.sqrt(np.sum(np.square(normal_diff),1)))/2)**p)
+        weights = np.exp(-32 * ((np.sqrt(np.sum(np.square(normal_diff), 1)))/2)**p)
         W[i, nodes_idx[i]] = weights
     
     #Find nearest node to each vertex

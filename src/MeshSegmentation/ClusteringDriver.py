@@ -26,15 +26,12 @@ def segment_mesh(context):
     P = np.reshape(P, (-1, 3))
     Faces = np.reshape(Faces, (-1, 3))
 
-    print(P.shape)
-    print(Faces.shape)
-
     #P = np.loadtxt('HalfAnnulusPoints')
     #import Faces = (np.loadtxt('HalfAnnulusConnectivityList') - 1).astype(int)
     k = 6 # Number of faces
-    n = 10000 # Number of Points that are sampled
-    r = 10 # Max radius of the search
-    p = 0.5 # Weight matrix
+    n = 5000 # Number of Points that are sampled
+    r = 5 # Max radius of the search
+    p = 1 # Weight matrix
 
     W, J, _ss_idx, _node_idx = graph_setup(P[:, 0], P[:, 1], P[:, 2], Faces, n, r, p)
 
@@ -48,14 +45,10 @@ def segment_mesh(context):
     L = canonical_labels(L)
     
     regions = [Material_Group_Manager.add_region_to_active() for i in range(k)]
-
-    print(regions)
     
     
     colors = [region.bsp.local_material_index for region in regions]
     
     sequence = [int(colors[L[face[0]]]) for face in Faces]
-    
-    print(sequence)
     
     polygons.foreach_set('material_index', sequence)
