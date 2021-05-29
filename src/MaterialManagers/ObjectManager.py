@@ -24,8 +24,8 @@ class MaterialGroupManager(object):
             ( of the given region )
         """
         p = context.active_object.cs_individual_VG_.material_regions.add()
-        rm = RegionManager(p)
-        return rm
+        return RegionManager(p, context=context)
+        
     
     def create_pair(self, context, cpolygon_pointer) -> PairManager:
         p = context.active_object.cs_individual_VG_.material_pairs.add()
@@ -83,8 +83,9 @@ class MaterialGroupManager(object):
             _ = self.reset_base_material(context=context) if s is None else None
             
             # Create a region
-            region = self.create_region(context_object)
+            region = self.create_region(context)
             self.object_data_dictionary[context_object]['Regions'].append(region)
+            
             return region
         
         except KeyError:

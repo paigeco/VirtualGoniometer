@@ -5,7 +5,8 @@ import numpy as np
 class RegionManager():
     """ Controls a single material
     """
-    def __init__(self, storage_pointer):
+    def __init__(self, storage_pointer, context=None):
+        self.context = bpy.context if context is None else context
         self.material_index = 0
         self.bsp = storage_pointer
 
@@ -37,7 +38,7 @@ class RegionManager():
         
         # add the material to the object
         
-        self.bsp.context_object.data.materials.append(material)
+        self.context.active_object.data.materials.append(material)
         
         # set the color
         material.diffuse_color = (self.color.r, self.color.g, self.color.b, 1)
